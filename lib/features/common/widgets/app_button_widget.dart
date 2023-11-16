@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/assets/text/text_style.dart';
 
 // ignore: public_member_api_docs
 class AppButtonWidget extends StatelessWidget {
@@ -9,9 +11,9 @@ class AppButtonWidget extends StatelessWidget {
   final int? index;
   final String? image;
 
+  // ignore: public_member_api_docs
   const AppButtonWidget({
-    super.key,
-    required this.title,
+    required this.title, super.key,
     this.isEnable = true,
     this.onPressed,
     this.index,
@@ -22,9 +24,7 @@ class AppButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Color(0xff007AFE)), /*MaterialStateProperty.all<Color>(
-          isEnable ? AppColor.green : AppColor.background,
-        ),*/
+        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff007AFE)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
@@ -40,12 +40,9 @@ class AppButtonWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //SvgPicture.asset(image ?? ''),
             Text(
               title,
-              /*style: AppTextStyle.button.copyWith(
-                color: isEnable ? AppColor.white : AppColor.inactiveBlack,
-              ),*/
+              style: AppTextStyle.semiBold18.value,
             ),
           ],
         ),

@@ -8,7 +8,7 @@ import 'package:flutter_template/features/navigation/domain/entity/app_route_nam
 @RoutePage(
   name: AppRouteNames.homeScreen,
 )
-class HomeScreen extends ElementaryWidget<IDashScreenWidgetModel> {
+class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
   /// Create an instance [HomeScreen].
   const HomeScreen({
     Key? key,
@@ -16,7 +16,7 @@ class HomeScreen extends ElementaryWidget<IDashScreenWidgetModel> {
   }) : super(wmFactory, key: key);
 
   @override
-  Widget build(IDashScreenWidgetModel wm) {
+  Widget build(IHomeScreenWidgetModel wm) {
     return  ColoredBox(
       color: wm.colorScheme.background,
       child: const Center(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/features/doctors/screen/doctors_screen_wm.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
-/// Main widget for ServicesScreen feature.
+/// Main widget for DoctorsScreen feature.
 @RoutePage(
   name: AppRouteNames.doctorsScreen,
 )

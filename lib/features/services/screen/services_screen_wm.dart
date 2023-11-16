@@ -15,11 +15,11 @@ ServicesScreenWidgetModel servicesScreenWmFactory(
 /// Widget model for [ServicesScreen].
 class ServicesScreenWidgetModel extends WidgetModel<ServicesScreen, ServicesScreenModel>
     with ThemeWMMixin
-    implements IInfoScreenWidgetModel {
+    implements IServicesScreenWidgetModel {
   /// Create an instance [ServicesScreenWidgetModel].
   ServicesScreenWidgetModel(super._model);
 }
 
 /// Interface of [ServicesScreenWidgetModel].
-abstract class IInfoScreenWidgetModel extends IWidgetModel
+abstract class IServicesScreenWidgetModel extends IWidgetModel
     with ThemeIModelMixin {}

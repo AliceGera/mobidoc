@@ -8,7 +8,7 @@ import 'package:flutter_template/features/services/screen/services_screen_wm.dar
 @RoutePage(
   name: AppRouteNames.servicesScreen,
 )
-class ServicesScreen extends ElementaryWidget<IInfoScreenWidgetModel> {
+class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
   /// Create an instance [ServicesScreen].
   const ServicesScreen({
     Key? key,
@@ -16,7 +16,7 @@ class ServicesScreen extends ElementaryWidget<IInfoScreenWidgetModel> {
   }) : super(wmFactory, key: key);
 
   @override
-  Widget build(IInfoScreenWidgetModel wm) {
+  Widget build(IServicesScreenWidgetModel wm) {
     return ColoredBox(
       color: wm.colorScheme.background,
       child: const Center(

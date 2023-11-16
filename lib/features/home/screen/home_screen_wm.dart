@@ -10,31 +10,31 @@ import 'package:flutter_template/features/home/screen/home_screen_model.dart';
 import 'package:flutter_template/l10n/app_localizations_x.dart';
 import 'package:provider/provider.dart';
 
-/// Factory for [DashScreenWidgetModel].
-DashScreenWidgetModel homeScreenWmFactory(
+/// Factory for [HomeScreenWidgetModel].
+HomeScreenWidgetModel homeScreenWmFactory(
   BuildContext context,
 ) {
   final scope = context.read<IAppScope>();
-  final model = DashScreenModel();
+  final model = HomeScreenModel();
 
-  return DashScreenWidgetModel(
+  return HomeScreenWidgetModel(
     model: model,
     analyticsService: scope.analyticsService,
   );
 }
 
 /// Widget model for [HomeScreen].
-class DashScreenWidgetModel extends WidgetModel<HomeScreen, DashScreenModel>
+class HomeScreenWidgetModel extends WidgetModel<HomeScreen, HomeScreenModel>
     with ThemeWMMixin
-    implements IDashScreenWidgetModel {
+    implements IHomeScreenWidgetModel {
   final IAnalyticsService _analyticsService;
 
   @override
   AppLocalizations get l10n => context.l10n;
 
-  /// Create an instance [DashScreenWidgetModel].
-  DashScreenWidgetModel({
-    required DashScreenModel model,
+  /// Create an instance [HomeScreenWidgetModel].
+  HomeScreenWidgetModel({
+    required HomeScreenModel model,
     required IAnalyticsService analyticsService,
   })  : _analyticsService = analyticsService,
         super(model);
@@ -45,8 +45,8 @@ class DashScreenWidgetModel extends WidgetModel<HomeScreen, DashScreenModel>
   }
 }
 
-/// Interface of [IDashScreenWidgetModel].
-abstract class IDashScreenWidgetModel extends IWidgetModel
+/// Interface of [IHomeScreenWidgetModel].
+abstract class IHomeScreenWidgetModel extends IWidgetModel
     with ThemeIModelMixin {
   /// Localization strings.
   AppLocalizations get l10n;

@@ -1,12 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/assets/colors/color_scheme.dart';
-import 'package:flutter_template/features/app/di/app_scope.dart';
-import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
+import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
 /// UI-kit screen.
 @RoutePage(name: AppRouteNames.onboardingScreen)
@@ -24,12 +21,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final size = MediaQuery.of(context).size;
-    /*return AutoTabsRouter.tabBar(
-      routes: wm.routes,
-      builder: (context, child, controller) {
-        final tabsRouter = context.tabsRouter;
-     */
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -95,7 +86,6 @@ class _MainWidget extends StatelessWidget {
     super.key,
   });
 
-  // final Size size;
   final String assetName;
   final String title;
   final String subtitle;
@@ -117,14 +107,7 @@ class _MainWidget extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              /*style: AppTextStyle.title.copyWith(
-                color: AppColor.main,
-              ),*/
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
+              style: AppTextStyle.bold22.value,
             ),
           ),
           Padding(
@@ -132,13 +115,7 @@ class _MainWidget extends StatelessWidget {
             child: Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-              /* style: AppTextStyle.small.copyWith(
-                color: AppColor.secondary2,
-              ),*/
+              style: AppTextStyle.regular16.value,
             ),
           ),
         ],
@@ -149,8 +126,8 @@ class _MainWidget extends StatelessWidget {
 
 class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWidget {
   const _AppBarOnboardingWidget({
-    super.key,
     required this.index,
+    super.key,
   });
 
   final int index;
@@ -175,24 +152,10 @@ class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWi
                       child: InkWell(
                         splashColor: Colors.white,
                         highlightColor: Colors.white,
-                        onTap: () {
-                          /*Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddNewPlaceScreen(),
-                      ),
-                    );*/
-                        },
-                        child: const Text(
+                        onTap: () {},
+                        child: Text(
                           'Пропустить',
-                          /*style: AppTextStyle.subtitle.copyWith(
-                      color: AppColor.green,
-                    ),*/
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
+                          style: AppTextStyle.semiBold16.value.copyWith(color: Colors.black),
                         ),
                       ),
                     ),

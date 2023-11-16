@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/config/urls.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen_widget_model.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
@@ -25,7 +24,7 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
         urlChanged: wm.urlChange,
         switchServer: wm.switchServer,
         setProxy: wm.setProxy,
-        openUiKit: wm.openOnboarding,
+        openOnboarding: wm.openOnboarding,
         saveExampleLog: wm.saveExampleLog,
         proxyController: wm.proxyEditingController,
         setThemeMode: wm.setThemeMode,
@@ -41,7 +40,7 @@ class _Body extends StatelessWidget {
   final void Function(UrlType) switchServer;
   final void Function(ThemeMode?) setThemeMode;
   final Function() setProxy;
-  final VoidCallback openUiKit;
+  final VoidCallback openOnboarding;
   final VoidCallback saveExampleLog;
   final TextEditingController proxyController;
 
@@ -52,7 +51,7 @@ class _Body extends StatelessWidget {
     required this.switchServer,
     required this.setThemeMode,
     required this.setProxy,
-    required this.openUiKit,
+    required this.openOnboarding,
     required this.saveExampleLog,
     required this.proxyController,
   });
@@ -68,7 +67,7 @@ class _Body extends StatelessWidget {
               const Text('Medical Screen'),
               Card(
                 child: ListTile(
-                  onTap: openUiKit,
+                  onTap: openOnboarding,
                   title: const Text('To onboarding screen'),
                 ),
               ),
