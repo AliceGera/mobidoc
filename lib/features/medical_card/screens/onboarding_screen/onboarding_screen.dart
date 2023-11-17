@@ -5,7 +5,7 @@ import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
-/// UI-kit screen.
+/// Onboarding screen.
 @RoutePage(name: AppRouteNames.onboardingScreen)
 class OnboardingScreen extends StatefulWidget {
   // ignore: public_member_api_docs

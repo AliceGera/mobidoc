@@ -6,17 +6,17 @@ import 'package:flutter_template/features/navigation/domain/entity/app_route_nam
 
 /// Initialization screens (this can be a HomeScreen or SplashScreen for example).
 @RoutePage(
-  name: AppRouteNames.tempScreen,
+  name: AppRouteNames.mainScreen,
 )
-class TempScreen extends ElementaryWidget<TempScreenWidgetModel> {
-  /// Create an instance [TempScreen].
-  const TempScreen({
+class MainScreen extends ElementaryWidget<MainScreenWidgetModel> {
+  /// Create an instance [MainScreen].
+  const MainScreen({
     Key? key,
     WidgetModelFactory wmFactory = initScreenWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   @override
-  Widget build(TempScreenWidgetModel wm) {
+  Widget build(MainScreenWidgetModel wm) {
     return AutoTabsRouter.tabBar(
       routes: wm.routes,
       builder: (context, child, controller) {

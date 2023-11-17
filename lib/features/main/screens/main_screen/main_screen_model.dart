@@ -1,18 +1,13 @@
 import 'package:elementary/elementary.dart';
-import 'package:flutter_template/config/environment/environment.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service.dart';
 import 'package:flutter_template/features/main/screens/main_screen/main_screen.dart';
 
-/// Model for [TempScreen].
-class TempScreenModel extends ElementaryModel implements ITempScreenModel {
-  final Environment _environment;
+/// Model for [MainScreen].
+class MainScreenModel extends ElementaryModel implements IMainScreenModel {
   final IThemeService _themeService;
 
-  @override
-  bool get isDebugMode => !_environment.isRelease;
-
-  /// Create an instance [TempScreenModel].
-  TempScreenModel(this._environment, this._themeService);
+  /// Create an instance [MainScreenModel].
+  MainScreenModel(this._themeService);
 
   @override
   void switchTheme() {
@@ -20,11 +15,8 @@ class TempScreenModel extends ElementaryModel implements ITempScreenModel {
   }
 }
 
-/// Interface of [TempScreenModel].
-abstract class ITempScreenModel extends ElementaryModel {
-  /// Return value for app environment status.
-  bool get isDebugMode;
-
+/// Interface of [MainScreenModel].
+abstract class IMainScreenModel extends ElementaryModel {
   /// Switch theme mode between light and dark.
   void switchTheme();
 }

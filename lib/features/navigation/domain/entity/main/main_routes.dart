@@ -6,11 +6,11 @@ import 'package:flutter_template/features/navigation/domain/entity/medical_card/
 import 'package:flutter_template/features/navigation/domain/entity/services/services_routes.dart';
 import 'package:flutter_template/features/navigation/service/router.dart';
 
-/// All routes for the temp feature.
+/// All routes for the main feature.
 final mainRoutes = AutoRoute(
-  page: TempRouter.page,
+  page: MainRouter.page,
   initial: true,
-  path: AppRoutePaths.tempPath,
+  path: AppRoutePaths.mainPath,
   children: [
     homeRoutes,
     servicesRoutes,

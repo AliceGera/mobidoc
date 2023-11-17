@@ -19,14 +19,8 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
   Widget build(IMedicalCardScreenWidgetModel wm) {
     return Scaffold(
       body: _Body(
-        urlState: wm.urlState,
         themeState: wm.themeState,
-        urlChanged: wm.urlChange,
-        switchServer: wm.switchServer,
-        setProxy: wm.setProxy,
         openOnboarding: wm.openOnboarding,
-        saveExampleLog: wm.saveExampleLog,
-        proxyController: wm.proxyEditingController,
         setThemeMode: wm.setThemeMode,
       ),
     );
@@ -34,26 +28,14 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
 }
 
 class _Body extends StatelessWidget {
-  final ListenableState<UrlType> urlState;
   final ListenableState<ThemeMode> themeState;
-  final void Function(UrlType?) urlChanged;
-  final void Function(UrlType) switchServer;
   final void Function(ThemeMode?) setThemeMode;
-  final Function() setProxy;
   final VoidCallback openOnboarding;
-  final VoidCallback saveExampleLog;
-  final TextEditingController proxyController;
 
   const _Body({
-    required this.urlState,
     required this.themeState,
-    required this.urlChanged,
-    required this.switchServer,
     required this.setThemeMode,
-    required this.setProxy,
     required this.openOnboarding,
-    required this.saveExampleLog,
-    required this.proxyController,
   });
 
   @override

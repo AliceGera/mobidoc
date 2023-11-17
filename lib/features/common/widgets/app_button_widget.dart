@@ -1,7 +1,8 @@
+// ignore: duplicate_ignore
+// ignore_for_, duplicate_ignore-file: public_member_api_docs
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
-import 'package:flutter_template/assets/text/text_style.dart';
 
 // ignore: public_member_api_docs
 class AppButtonWidget extends StatelessWidget {
@@ -13,7 +14,8 @@ class AppButtonWidget extends StatelessWidget {
 
   // ignore: public_member_api_docs
   const AppButtonWidget({
-    required this.title, super.key,
+    required this.title,
+    super.key,
     this.isEnable = true,
     this.onPressed,
     this.index,
@@ -42,7 +44,6 @@ class AppButtonWidget extends StatelessWidget {
           children: [
             Text(
               title,
-              style: AppTextStyle.semiBold18.value,
             ),
           ],
         ),
