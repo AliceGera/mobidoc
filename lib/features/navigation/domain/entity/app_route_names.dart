@@ -6,21 +6,21 @@
 /// static const String screenName = 'screenNameRoute';
 /// ```
 abstract class AppRouteNames {
-  /// TempScreen route name.
-  static const String tempScreen = 'tempRouter';
+  /// DoctorsScreen route name.
+  static const String doctorsScreen = 'doctorsRouter';
 
-  /// TempScreen route name.
-  static const String uiKitScreen = 'uiKitRouter';
+  /// HomeScreen route name.
+  static const String homeScreen = 'homeRouter';
 
-  /// DebugScreen route name.
-  static const String debugScreen = 'debugRouter';
+  /// MainScreen route name.
+  static const String mainScreen = 'mainRouter';
 
-  /// DashScreen route name.
-  static const String dashScreen = 'dashRouter';
+  /// MedicalCardScreen route name.
+  static const String medicalCardScreen = 'medicalCardRouter';
 
-  /// InfoScreen route name.
-  static const String infoScreen = 'infoRouter';
+  /// OnboardingScreen route name.
+  static const String onboardingScreen = 'onboardingRouter';
 
-  /// LogHistoryScreen route name.
-  static const String logHistoryScreen = 'logHistoryRouter';
+  /// ServicesScreen route name.
+  static const String servicesScreen = 'servicesRouter';
 }
