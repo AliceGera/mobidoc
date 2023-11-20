@@ -24,46 +24,44 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
   Widget build(IHomeScreenWidgetModel wm) {
     return SafeArea(
       child: Scaffold(
-        body: ColoredBox(
-          color: AppColors.backgroundColor,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const _ProfileWidget(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 22, left: 22, top: 40, bottom: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _NotificationsWidget(
-                        doctor: 'Терапевт',
+        backgroundColor: AppColors.backgroundColor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const _ProfileWidget(),
+              Padding(
+                padding: const EdgeInsets.only(right: 22, left: 22, top: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const _NotificationsWidget(
+                      doctor: 'Терапевт',
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50, bottom: 20),
+                      child: Text(
+                        'Последние посещения',
+                        style: AppTextStyle.bold20.value,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 50, bottom: 20),
-                        child: Text(
-                          'Последние посещения',
-                          style: AppTextStyle.bold20.value,
-                        ),
+                    ),
+                    ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return const AppItemWidget(
+                          title: 'Терапевт',
+                          textInfo: '10 Июня 2023',
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 16,
                       ),
-                      ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return const AppItemWidget(
-                            title: 'Терапевт',
-                            textInfo: '10 Июня 2023',
-                          );
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -76,7 +74,6 @@ class _NotificationsWidget extends StatelessWidget {
 
   const _NotificationsWidget({
     required this.doctor,
-    super.key,
   });
 
   @override
@@ -155,9 +152,7 @@ class _NotificationsWidget extends StatelessWidget {
 }
 
 class _ProfileWidget extends StatelessWidget {
-  const _ProfileWidget({
-    super.key,
-  });
+  const _ProfileWidget();
 
   @override
   Widget build(BuildContext context) {
