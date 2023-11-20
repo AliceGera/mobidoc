@@ -94,7 +94,7 @@ class _Body extends StatelessWidget {
                 color: AppColors.black,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Заполните логин';
+                    return 'Заполните поле';
                   }
                   if (value?.isValidEmail() ?? false) {
                     return null;
