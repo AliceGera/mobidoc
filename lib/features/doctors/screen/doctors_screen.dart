@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_doctor_widget.dart';
-import 'package:flutter_template/features/doctors/screen/doctors_screen_wm.dart';
+import 'package:flutter_template/features/doctors/screen/doctors_screen_widget_model.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
 /// Main widget for DoctorsScreen feature.

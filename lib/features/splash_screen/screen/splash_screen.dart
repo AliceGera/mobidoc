@@ -5,7 +5,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
-import 'package:flutter_template/features/splash_screen/screen/splash_screen_wm.dart';
+import 'package:flutter_template/features/splash_screen/screen/splash_screen_widget_model.dart';
 
 /// medical card screens.
 @RoutePage(

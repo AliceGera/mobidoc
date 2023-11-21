@@ -36,6 +36,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   /// Class that coordinates navigation for the whole app.
   late final TextEditingController _textEmailController;
   late final TextEditingController _textPasswordController;
+  late final ValueNotifier<bool> _wrongValue;
 
   final AppRouter _appRouter;
   final SharedPreferences _prefs;
@@ -49,7 +50,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
     super._model,
     this._appRouter,
     this._prefs,
-    );
+  );
 
   @override
   TextEditingController get textEmailController => _textEmailController;
@@ -58,8 +59,12 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   TextEditingController get textPasswordController => _textPasswordController;
 
   @override
+  ValueNotifier<bool> get wrongValue => _wrongValue;
+
+  @override
   void initWidgetModel() {
     super.initWidgetModel();
+    _wrongValue = ValueNotifier(false);
     _textEmailController = TextEditingController();
     _textPasswordController = TextEditingController();
     model.currentThemeMode.addListener(_updateThemeMode);
@@ -87,6 +92,8 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   void openNextScreen() {
     if (_textEmailController.text == 'cats@gmail.com' && _textPasswordController.text == '1234') {
       _appRouter.push(MainRouter());
+    } else {
+      _wrongValue.value = true;
     }
   }
 
@@ -103,6 +110,8 @@ abstract class ILoginScreenWidgetModel extends IWidgetModel {
   TextEditingController get textEmailController;
 
   TextEditingController get textPasswordController;
+
+  ValueNotifier<bool> get wrongValue;
 
   /// Method to close the debug screens.
   void closeScreen() {}
