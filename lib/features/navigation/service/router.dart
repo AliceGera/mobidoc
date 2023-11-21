@@ -3,14 +3,16 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/features/doctors/screen/doctors_screen_export.dart';
 import 'package:flutter_template/features/home/screen/home_screen_export.dart';
+import 'package:flutter_template/features/login_screen/login_screen_export.dart';
 import 'package:flutter_template/features/main/screens/main_screen/main_screen_export.dart';
-import 'package:flutter_template/features/medical_card/screens/login_screen/login_screen_export.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen_export.dart';
-import 'package:flutter_template/features/medical_card/screens/onboarding_screen/onboarding_screen_export.dart';
 import 'package:flutter_template/features/navigation/domain/entity/login/login_routes.dart';
 import 'package:flutter_template/features/navigation/domain/entity/main/main_routes.dart';
 import 'package:flutter_template/features/navigation/domain/entity/onboarding/onboarding_routes.dart';
+import 'package:flutter_template/features/navigation/domain/entity/splash/splash_routes.dart';
+import 'package:flutter_template/features/onboarding_screen/onboarding_screen_export.dart';
 import 'package:flutter_template/features/services/screen/services_screen_export.dart';
+import 'package:flutter_template/features/splash_screen/screen/splash_screen_export.dart';
 
 part 'router.gr.dart';
 
@@ -32,6 +34,7 @@ class AppRouter extends _$AppRouter {
         mainRoutes,
         onboardingRoutes,
         loginRoutes,
+        splashRoutes,
       ];
 
   AppRouter._();

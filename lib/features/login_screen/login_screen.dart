@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
-import 'package:flutter_template/features/medical_card/screens/login_screen/login_screen_widget_model.dart';
-import 'package:flutter_template/features/medical_card/screens/login_screen/widgets/text_field_widget.dart';
+import 'package:flutter_template/features/login_screen/login_screen_widget_model.dart';
+import 'package:flutter_template/features/login_screen/widgets/text_field_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 
 extension EmailValidator on String {
@@ -31,10 +31,10 @@ class LoginScreen extends ElementaryWidget<ILoginScreenWidgetModel> {
   Widget build(ILoginScreenWidgetModel wm) {
     return Scaffold(
       body: _Body(
+        textPasswordController: wm.textPasswordController,
         textEmailController: wm.textEmailController,
         themeState: wm.themeState,
-        openOnboarding: wm.openOnboarding,
-        openLogin: wm.openLogin,
+        openNextScreen: wm.openNextScreen,
         setThemeMode: wm.setThemeMode,
       ),
     );
@@ -45,15 +45,15 @@ class _Body extends StatelessWidget {
   final ListenableState<ThemeMode> themeState;
   final void Function(ThemeMode?) setThemeMode;
   final TextEditingController textEmailController;
-  final VoidCallback openOnboarding;
-  final VoidCallback openLogin;
+  final TextEditingController textPasswordController;
+  final VoidCallback openNextScreen;
 
   const _Body({
     required this.themeState,
     required this.setThemeMode,
-    required this.openOnboarding,
+    required this.openNextScreen,
     required this.textEmailController,
-    required this.openLogin,
+    required this.textPasswordController,
   });
 
   @override
@@ -97,6 +97,7 @@ class _Body extends StatelessWidget {
                     return 'Заполните поле';
                   }
                   if (value?.isValidEmail() ?? false) {
+                    textEmailController.value = textEmailController.value.copyWith(text: value);
                     return null;
                   } else {
                     return 'example@1.com';
@@ -114,10 +115,13 @@ class _Body extends StatelessWidget {
                 ),
               ),
               TextFieldWidget(
+                textController: textPasswordController ,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Заполните поле';
                   }
+                  textPasswordController.value = textPasswordController.value.copyWith(text: value);
+
                 },
                 obscureText: true,
                 hintText: '**********',
@@ -129,7 +133,7 @@ class _Body extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 21, top: 30),
                 child: AppButtonWidget(
                   title: 'Войти',
-                  onPressed: () {},
+                  onPressed: openNextScreen,
                 ),
               ),
             ],
