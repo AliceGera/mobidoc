@@ -5,5 +5,14 @@ class SvgIcons {
 
   static const String testSvg = 'assets/icons/test_svg.svg';
 
+  static const String iconHome = 'assets/icons/home.svg';
+  static const String iconHomeSelected = 'assets/icons/selected_home.svg';
+  static const String iconServices = 'assets/icons/services.svg';
+  static const String iconServicesSelected = 'assets/icons/selected_services.svg';
+  static const String iconDoctors = 'assets/icons/doctors.svg';
+  static const String iconDoctorsSelected = 'assets/icons/selected_doctors.svg';
+  static const String iconMedicalCard = 'assets/icons/medical_card.svg';
+  static const String iconMedicalCardSelected = 'assets/icons/selected_medical_card.svg';
+
   static const List<String> values = [testSvg];
 }

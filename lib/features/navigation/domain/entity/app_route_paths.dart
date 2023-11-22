@@ -7,20 +7,20 @@
 /// ```
 abstract class AppRoutePaths {
   /// Path to temp screen.
-  static const String tempPath = '/temp';
+  static const String doctorsPath = 'doctors';
 
   /// Path to debug screen.
-  static const String debugPath = 'debug';
+  static const String homePath = 'home';
 
   /// Path to ui kit screen.
-  static const String uiKitPath = '/ui_kit';
+  static const String mainPath = '/main';
 
   /// Path to dash screen.
-  static const String dashPath = 'dash';
+  static const String medicalCardPath = 'medicalCard';
 
   /// Path to info screen.
-  static const String infoPath = 'info';
+  static const String onboardingPath = '/onboarding';
 
   /// Path to logs history screen.
-  static const String logHistory = '/logHistory';
+  static const String servicesPath = 'services';
 }

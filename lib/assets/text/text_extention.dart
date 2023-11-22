@@ -15,19 +15,25 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
   /// Text style 16_124_500.
   final TextStyle medium16;
 
+  final TextStyle semiBold16;
+
   /// Text style 14_140_700.
   final TextStyle bold14;
 
   /// Text style 16_124_700.
   final TextStyle bold16;
 
+  final TextStyle bold22;
+
   AppTextTheme._({
     required this.regular14,
     required this.regular16,
     required this.medium14,
     required this.medium16,
+    required this.semiBold16,
     required this.bold14,
     required this.bold16,
+    required this.bold22,
   });
 
   /// Base app text theme.
@@ -36,8 +42,10 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
         regular16 = AppTextStyle.regular16.value,
         medium14 = AppTextStyle.medium14.value,
         medium16 = AppTextStyle.medium16.value,
+        semiBold16 = AppTextStyle.semiBold16.value,
         bold14 = AppTextStyle.bold14.value,
-        bold16 = AppTextStyle.bold16.value;
+        bold16 = AppTextStyle.bold16.value,
+        bold22 = AppTextStyle.bold22.value;
 
   @override
   ThemeExtension<AppTextTheme> lerp(
@@ -53,15 +61,16 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
       regular16: TextStyle.lerp(regular16, other.regular16, t)!,
       medium14: TextStyle.lerp(medium14, other.medium14, t)!,
       medium16: TextStyle.lerp(medium16, other.medium16, t)!,
+      semiBold16: TextStyle.lerp(semiBold16, other.semiBold16, t)!,
       bold14: TextStyle.lerp(bold14, other.bold14, t)!,
       bold16: TextStyle.lerp(bold16, other.bold16, t)!,
+      bold22: TextStyle.lerp(bold22, other.bold22, t)!,
     );
   }
 
   /// Return text theme for app from context.
   static AppTextTheme of(BuildContext context) {
-    return Theme.of(context).extension<AppTextTheme>() ??
-        _throwThemeExceptionFromFunc(context);
+    return Theme.of(context).extension<AppTextTheme>() ?? _throwThemeExceptionFromFunc(context);
   }
 
   /// @nodoc.
@@ -71,19 +80,22 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
     TextStyle? regular16,
     TextStyle? medium14,
     TextStyle? medium16,
+    TextStyle? semiBold16,
     TextStyle? bold14,
     TextStyle? bold16,
+    TextStyle? bold22,
   }) {
     return AppTextTheme._(
       regular14: regular14 ?? this.regular14,
       regular16: regular16 ?? this.regular16,
       medium14: medium14 ?? this.medium14,
       medium16: medium16 ?? this.medium16,
+      semiBold16: semiBold16 ?? this.semiBold16,
       bold14: bold14 ?? this.bold14,
       bold16: bold16 ?? this.bold16,
+      bold22: bold22 ?? this.bold22,
     );
   }
 }
 
-Never _throwThemeExceptionFromFunc(BuildContext context) =>
-    throw Exception('$AppTextTheme не найдена в $context');
+Never _throwThemeExceptionFromFunc(BuildContext context) => throw Exception('$AppTextTheme не найдена в $context');
