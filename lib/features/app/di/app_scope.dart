@@ -2,7 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/api/service/services_api.dart';
 import 'package:flutter_template/config/environment/environment.dart';
+import 'package:flutter_template/features/common/domain/repository/services_repository.dart';
+import 'package:flutter_template/features/common/service/services_service.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service_impl.dart';
 import 'package:flutter_template/features/common/utils/analytics/amplitude/amplitude_analytic_tracker.dart';
@@ -28,7 +31,9 @@ class AppScope implements IAppScope {
   late final AppRouter _router;
   late final IThemeService _themeService;
   late final IAnalyticsService _analyticsService;
-
+  late final ServicesService _servicesService;
+  late final ServicesRepository _servicesRepository;
+  late final ServicesApi _servicesApi;
   @override
   late VoidCallback applicationRebuilder;
 
@@ -52,6 +57,8 @@ class AppScope implements IAppScope {
 
   late IThemeModeStorage _themeModeStorage;
 
+  @override
+  ServicesService get servicesService => _servicesService;
   /// Create an instance [AppScope].
   AppScope(this._sharedPreferences) {
     /// List interceptor. Fill in as needed.
@@ -66,6 +73,8 @@ class AppScope implements IAppScope {
       FirebaseAnalyticTracker(MockFirebaseAnalytics()),
       AmplitudeAnalyticTracker(MockAmplitudeAnalytics()),
     ]);
+    _servicesApi = ServicesApi(dio);
+    _servicesService = _initServicesService();
   }
 
   @override
@@ -117,6 +126,10 @@ class AppScope implements IAppScope {
   Future<void> _onThemeModeChanged() async {
     await _themeModeStorage.saveThemeMode(mode: _themeService.currentThemeMode);
   }
+  ServicesService _initServicesService() {
+    _servicesRepository = ServicesRepository(_servicesApi);
+    return ServicesService(_servicesRepository);
+  }
 }
 
 /// App dependencies.
@@ -144,4 +157,6 @@ abstract class IAppScope {
 
   /// Analytics sending service
   IAnalyticsService get analyticsService;
+
+  ServicesService get servicesService;
 }
