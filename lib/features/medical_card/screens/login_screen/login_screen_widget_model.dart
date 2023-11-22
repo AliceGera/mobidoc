@@ -73,7 +73,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
 
   @override
   void openLogin() {
-    router.push(const LoginRouter());
+    router.push( LoginRouter());
   }
   void _updateThemeMode() {
     _themeState.accept(model.currentThemeMode.value);

@@ -68,7 +68,7 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
 
   @override
   void openLogin() {
-    router.push(const LoginRouter());
+    router.push(LoginRouter());
   }
   void _updateThemeMode() {
     _themeState.accept(model.currentThemeMode.value);
