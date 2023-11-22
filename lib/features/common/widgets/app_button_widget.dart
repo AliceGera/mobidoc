@@ -3,6 +3,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
+import 'package:flutter_template/assets/colors/app_colors.dart';
 
 // ignore: public_member_api_docs
 class AppButtonWidget extends StatelessWidget {
@@ -26,7 +27,7 @@ class AppButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff007AFE)),
+        backgroundColor: MaterialStateProperty.all<Color>(AppColors.darkBlue),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),

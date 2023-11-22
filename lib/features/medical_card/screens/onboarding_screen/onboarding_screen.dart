@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
@@ -23,7 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         appBar: _AppBarOnboardingWidget(index: index),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -138,7 +139,7 @@ class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWi
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       title: index != 2
           ? InkWell(
               onTap: () {},
@@ -150,8 +151,8 @@ class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWi
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 18, 16, 18),
                       child: InkWell(
-                        splashColor: Colors.white,
-                        highlightColor: Colors.white,
+                        splashColor: AppColors.white,
+                        highlightColor: AppColors.white,
                         onTap: () {},
                         child: Text(
                           'Пропустить',
