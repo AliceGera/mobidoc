@@ -1,10 +1,15 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/api/service/doctors_api.dart';
 import 'package:flutter_template/api/service/services_api.dart';
 import 'package:flutter_template/config/environment/environment.dart';
+import 'package:flutter_template/features/common/domain/repository/doctors_repository.dart';
 import 'package:flutter_template/features/common/domain/repository/services_repository.dart';
+import 'package:flutter_template/features/common/service/doctors_service.dart';
 import 'package:flutter_template/features/common/service/services_service.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service_impl.dart';
@@ -32,8 +37,11 @@ class AppScope implements IAppScope {
   late final IThemeService _themeService;
   late final IAnalyticsService _analyticsService;
   late final ServicesService _servicesService;
+  late final DoctorsService _doctorsService;
   late final ServicesRepository _servicesRepository;
+  late final DoctorsRepository _doctorsRepository;
   late final ServicesApi _servicesApi;
+  late final DoctorsApi _doctorsApi;
   @override
   late VoidCallback applicationRebuilder;
 
@@ -59,6 +67,9 @@ class AppScope implements IAppScope {
 
   @override
   ServicesService get servicesService => _servicesService;
+
+  @override
+  DoctorsService get doctorsService => _doctorsService;
   /// Create an instance [AppScope].
   AppScope(this._sharedPreferences) {
     /// List interceptor. Fill in as needed.
@@ -74,7 +85,9 @@ class AppScope implements IAppScope {
       AmplitudeAnalyticTracker(MockAmplitudeAnalytics()),
     ]);
     _servicesApi = ServicesApi(dio);
+    _doctorsApi = DoctorsApi(dio);
     _servicesService = _initServicesService();
+    _doctorsService = _initDoctorsService();
   }
 
   @override
@@ -130,6 +143,10 @@ class AppScope implements IAppScope {
     _servicesRepository = ServicesRepository(_servicesApi);
     return ServicesService(_servicesRepository);
   }
+  DoctorsService _initDoctorsService() {
+    _doctorsRepository = DoctorsRepository(_doctorsApi);
+    return  DoctorsService(_doctorsRepository);
+  }
 }
 
 /// App dependencies.
@@ -159,4 +176,6 @@ abstract class IAppScope {
   IAnalyticsService get analyticsService;
 
   ServicesService get servicesService;
+
+  DoctorsService get doctorsService;
 }

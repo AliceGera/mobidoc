@@ -2,41 +2,44 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'services_response.g.dart';
+part 'doctors_response.g.dart';
 
 // ignore: public_member_api_docs
 @JsonSerializable(explicitToJson: true)
-class ServicesResponse {
+class DoctorsResponse {
   @JsonKey(name: 'hydra:member')
   final List<MemberResponse?> member;
 
-  const ServicesResponse({
+  const DoctorsResponse({
     required this.member,
   });
 
-  factory ServicesResponse.fromJson(Map<String, dynamic> json) => _$ServicesResponseFromJson(json);
+  factory DoctorsResponse.fromJson(Map<String, dynamic> json) => _$DoctorsResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ServicesResponseToJson(this);
+  Map<String, dynamic> toJson() => _$DoctorsResponseToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
 class MemberResponse {
   @JsonKey(name: 'id')
   final int? id;
-  @JsonKey(name: 'title')
-  final String? title;
-  @JsonKey(name: 'description')
-  final String? description;
+  @JsonKey(name: 'name')
+  final String? name;
+  @JsonKey(name: 'speciality')
+  final String? speciality;
+  @JsonKey(name: 'bio')
+  final String? bio;
 
   const MemberResponse({
     required this.id,
-    required this.title,
-    required this.description,
+    required this.name,
+    required this.speciality,
+    required this.bio,
   });
 
   factory MemberResponse.fromJson(
-    Map<String, dynamic> json,
-  ) =>
+      Map<String, dynamic> json,
+      ) =>
       _$MemberResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$MemberResponseToJson(this);

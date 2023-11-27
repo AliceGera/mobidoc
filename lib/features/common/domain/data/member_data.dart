@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 class Member {
-  final String id;
+  final int id;
   final String title;
   final String description;
 
@@ -13,7 +13,7 @@ class Member {
   });
 
   Member copyWith({
-    String? id,
+    int? id,
     String? title,
     String? description,
   }) {

@@ -8,7 +8,7 @@ Services mapResponseToServices(ServicesResponse response) {
     member: response.member
         .map(
           (e) => Member(
-            id: e?.id ?? '',
+            id: e?.id ?? 0,
             title: e?.title ?? '',
             description: e?.description ?? '',
           ),

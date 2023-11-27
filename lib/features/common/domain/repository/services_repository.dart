@@ -11,6 +11,7 @@ class ServicesRepository {
   ServicesRepository(this._apiClient);
 
   Future<Services> getServices() async {
-    return _apiClient.getServices().then(mapResponseToServices);
+    final some = await _apiClient.getServices();
+    return mapResponseToServices(some);
   }
 }
