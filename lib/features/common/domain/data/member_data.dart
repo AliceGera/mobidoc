@@ -23,4 +23,9 @@ class Member {
       description: description ?? this.description,
     );
   }
+  static Member init() => Member(
+    id:0,
+    title: '',
+    description: '',
+  );
 }

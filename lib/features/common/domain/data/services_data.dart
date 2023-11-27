@@ -17,4 +17,8 @@ class Services {
       member: member ?? this.member,
     );
   }
+  static Services init() => Services(
+    member: [],
+  );
+
 }

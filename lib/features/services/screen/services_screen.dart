@@ -1,5 +1,4 @@
 // ignore_for_file: use_if_null_to_convert_nulls_to_bools
-
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_template/features/common/widgets/app_item_loading_widget
 import 'package:flutter_template/features/common/widgets/app_item_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
 import 'package:flutter_template/features/services/screen/services_screen_widget_model.dart';
+import 'package:union_state/union_state.dart';
 
 /// Main widget for ServicesScreen feature.
 @RoutePage(
@@ -25,16 +25,16 @@ class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
 
   @override
   Widget build(IServicesScreenWidgetModel wm) {
-    return StateNotifierBuilder<EntityState<Services>>(
-      listenableState: wm.ServicesState,
+    return UnionStateListenableBuilder<Services>(
+      unionStateListenable: wm.ServicesState,
       builder: (_, services) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: AppColors.backgroundColor,
-            body:  services?.hasError == true? const AppErrorWidget(wrongText: 'Что-то пошло не так!\nПовторите попытку.',): SingleChildScrollView(
-              child:Padding(
+            body: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child:Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
@@ -46,12 +46,10 @@ class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
                       shrinkWrap: true,
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        return services?.isLoading == true
-                            ?  AppItemLoadingWidget()
-                            : AppItemWidget(
-                                title: services?.data?.member[index].title ?? '0',
-                                textInfo: services?.data?.member[index].title ?? '0',
-                              );
+                        return AppItemWidget(
+                          title: services?.member[index].title ?? '0',
+                          textInfo: services?.member[index].title ?? '0',
+                        );
                       },
                       separatorBuilder: (context, index) => const SizedBox(
                         height: 16,
@@ -64,6 +62,37 @@ class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
           ),
         );
       },
+      loadingBuilder: (_, services) => SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text('Услуги', style: AppTextStyle.bold30.value),
+                ),
+                ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const AppItemLoadingWidget();
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      failureBuilder: (_, exception, services) => const AppErrorWidget(
+        wrongText: 'Что-то пошло не так!\nПовторите попытку.',
+      ),
     );
   }
 }
