@@ -30,4 +30,6 @@ abstract class AppRoutePaths {
   /// Path to onboarding screen.
   static const String splashPath = '/splash';
 
+  /// Path to onboarding screen.
+  static const String infoAboutMedicalCardPath = '/infoAboutMedicalCard';
 }

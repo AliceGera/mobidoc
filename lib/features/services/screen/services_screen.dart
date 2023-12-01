@@ -28,35 +28,38 @@ class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
     return UnionStateListenableBuilder<Services>(
       unionStateListenable: wm.ServicesState,
       builder: (_, services) {
-        return SafeArea(
-          child: Scaffold(
+        return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: AppColors.backgroundColor,
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: Text('Услуги', style: AppTextStyle.bold30.value),
+            centerTitle: false,
+            title: Text(
+              'Услуги',
+              style: AppTextStyle.bold30.value.copyWith(color: AppColors.black),
+            ),
+          ),
+          backgroundColor: AppColors.backgroundColor,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return AppItemWidget(
+                        title: services?.member[index].title ?? '0',
+                        textInfo: services?.member[index].title ?? '0',
+                      );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 16,
                     ),
-                    ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return AppItemWidget(
-                          title: services?.member[index].title ?? '0',
-                          textInfo: services?.member[index].title ?? '0',
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 16,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

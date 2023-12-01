@@ -5,7 +5,9 @@ import 'package:flutter_template/features/doctors/screen/doctors_screen_export.d
 import 'package:flutter_template/features/home/screen/home_screen_export.dart';
 import 'package:flutter_template/features/login_screen/login_screen_export.dart';
 import 'package:flutter_template/features/main/screens/main_screen/main_screen_export.dart';
+import 'package:flutter_template/features/medical_card/screens/info_about_medical_card/info_about_medical_card_screen_export.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen_export.dart';
+import 'package:flutter_template/features/navigation/domain/entity/info_about_medical_card/info_about_medical_card_routes.dart';
 import 'package:flutter_template/features/navigation/domain/entity/login/login_routes.dart';
 import 'package:flutter_template/features/navigation/domain/entity/main/main_routes.dart';
 import 'package:flutter_template/features/navigation/domain/entity/onboarding/onboarding_routes.dart';
@@ -13,7 +15,6 @@ import 'package:flutter_template/features/navigation/domain/entity/splash/splash
 import 'package:flutter_template/features/onboarding_screen/onboarding_screen_export.dart';
 import 'package:flutter_template/features/services/screen/services_screen_export.dart';
 import 'package:flutter_template/features/splash_screen/screen/splash_screen_export.dart';
-
 part 'router.gr.dart';
 
 /// When you add route with screen don't forget add imports of screen and screen_widget_model
@@ -35,6 +36,7 @@ class AppRouter extends _$AppRouter {
         onboardingRoutes,
         loginRoutes,
         splashRoutes,
+    infoAboutMedicalCardRoutes,
       ];
 
   AppRouter._();

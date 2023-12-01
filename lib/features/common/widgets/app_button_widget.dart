@@ -31,7 +31,7 @@ class AppButtonWidget extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all<Color>(AppColors.darkBlue),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(25),
           ),
         ),
       ),

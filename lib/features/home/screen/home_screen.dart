@@ -22,15 +22,16 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
     WidgetModelFactory wmFactory = homeScreenWmFactory,
   }) : super(wmFactory, key: key);
   final bool isLoading = true;
+
   @override
   Widget build(IHomeScreenWidgetModel wm) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
             child: Column(
-            children: [
-            isLoading ? _LoadingProfileWidget() : _ProfileWidget(name:'Григорий Плювкин'),
+          children: [
+            isLoading ? _LoadingProfileWidget() : _ProfileWidget(name: 'Григорий Плювкин'),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 40),
               child: Column(
@@ -38,8 +39,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 50),
-                    child:  _NotificationsWidget(
-                      ///???
+                    child: _NotificationsWidget(
                       isShimer: isLoading,
                       notice: 'Уведомления',
                       doctor: 'Терапевт',
@@ -50,9 +50,9 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                   ),
                   isLoading
                       ? Padding(
-                        padding: const EdgeInsets.only(bottom: 25),
-                        child: AppItemLoadingWidget(text: 'Последние посещения'),
-                      )
+                          padding: const EdgeInsets.only(bottom: 25),
+                          child: AppItemLoadingWidget(text: 'Последние посещения'),
+                        )
                       : Padding(
                           padding: const EdgeInsets.only(top: 50, bottom: 20),
                           child: Text(
@@ -66,7 +66,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                     itemCount: 4,
                     itemBuilder: (context, index) {
                       return isLoading
-                          ?  const AppItemLoadingWidget()
+                          ? const AppItemLoadingWidget()
                           : const AppItemWidget(
                               title: 'Терапевт',
                               textInfo: '10 Июня 2023',
@@ -180,7 +180,8 @@ class _NotificationsWidget extends StatelessWidget {
 
 class _ProfileWidget extends StatelessWidget {
   final String name;
-   _ProfileWidget({required this.name});
+
+  _ProfileWidget({required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +198,7 @@ class _ProfileWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -276,11 +277,10 @@ class _ProfileWidget extends StatelessWidget {
 class _LoadingProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Shimmer.fromColors(
-        baseColor: AppColors.darkBlue,
-        highlightColor: AppColors.darkBlue.withOpacity(0.8),
-        child: DecoratedBox(
+    return Stack(
+      children: [
+        Container(
+          height: 210,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
             gradient: LinearGradient(
@@ -292,15 +292,20 @@ class _LoadingProfileWidget extends StatelessWidget {
               ],
             ),
           ),
+        ),
+        SizedBox(
+          height: 210,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '',
-                  style: AppTextStyle.bold24.value.copyWith(
-                    color: Colors.transparent,
+                Container(
+                  height: 40,
+                  width: 262,
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 Row(
@@ -308,29 +313,28 @@ class _LoadingProfileWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: AppColors.lightBlueProfile,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
+                      padding: const EdgeInsets.only(top: 52, bottom: 10),
+                      child: Container(
+                        height: 32,
+                        width: 135,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
+                    CustomPaint(
+                      size: Size(100, 100),
+                      painter: CirclePainter(),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -360,4 +364,22 @@ class _LastVisits extends StatelessWidget {
       ),
     );
   }
+}
+
+class CirclePainter extends CustomPainter {
+  final _paint = Paint()
+    ..color = AppColors.lightBlueProfile
+    ..strokeWidth = 20
+    ..style = PaintingStyle.stroke;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawOval(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      _paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

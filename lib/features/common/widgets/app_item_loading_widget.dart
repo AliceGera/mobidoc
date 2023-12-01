@@ -10,16 +10,20 @@ import 'package:shimmer/shimmer.dart';
 class AppItemLoadingWidget extends StatelessWidget {
   // ignore: public_member_api_docs
   final String? text;
-
+  final double? width;
+  final double? height;
   const AppItemLoadingWidget({
     this.text,
+    this.width,
+    this.height,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: (text == '') ? double.infinity : null,
+      height: height,
+      width: width ?? double.infinity,
       child: Shimmer.fromColors(
         baseColor: AppColors.lightBlueItem,
         highlightColor: AppColors.lightBlueItem.withOpacity(0.4),

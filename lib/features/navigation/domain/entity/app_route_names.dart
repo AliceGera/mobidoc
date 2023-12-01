@@ -29,4 +29,7 @@ abstract class AppRouteNames {
 
   /// SplashScreen route name.
   static const String splashScreen = 'splashRouter';
+
+  /// InfoAboutMedicalCardScreen route name.
+  static const String infoAboutMedicalCardScreen = 'infoAboutMedicalCardRouter';
 }
