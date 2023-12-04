@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter_template/features/common/domain/data/doctors/doctors_data.dart';
 import 'package:flutter_template/features/common/service/doctors_service.dart';

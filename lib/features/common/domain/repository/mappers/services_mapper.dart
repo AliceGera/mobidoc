@@ -1,6 +1,6 @@
 import 'package:flutter_template/api/data/services_response.dart';
-import 'package:flutter_template/features/common/domain/data/member_data.dart';
-import 'package:flutter_template/features/common/domain/data/services_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/member_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/services_data.dart';
 
 /// Map [ServicesResponse] to [Services]
 Services mapResponseToServices(ServicesResponse response) {

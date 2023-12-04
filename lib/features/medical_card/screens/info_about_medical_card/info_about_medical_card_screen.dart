@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 /*
 */
 
@@ -21,7 +23,12 @@ import 'package:flutter_template/features/navigation/domain/entity/app_route_nam
 )
 class InfoAboutMedicalCardScreen extends ElementaryWidget<IInfoAboutMedicalCardScreenWidgetModel> {
   /// Create an instance [InfoAboutMedicalCardScreen].
-  const InfoAboutMedicalCardScreen({
+  final String description;
+  final String name;
+
+  const InfoAboutMedicalCardScreen(
+      this.name,
+      this.description, {
     Key? key,
     WidgetModelFactory wmFactory = infoAboutMedicalCardScreenWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -30,6 +37,8 @@ class InfoAboutMedicalCardScreen extends ElementaryWidget<IInfoAboutMedicalCardS
   Widget build(IInfoAboutMedicalCardScreenWidgetModel wm) {
     return Scaffold(
       body: _Body(
+        name: name,
+        description: description,
         themeState: wm.themeState,
         setThemeMode: wm.setThemeMode,
         openNextScreen: wm.openNextScreen,
@@ -39,13 +48,17 @@ class InfoAboutMedicalCardScreen extends ElementaryWidget<IInfoAboutMedicalCardS
 }
 
 class _Body extends StatelessWidget {
+  final String name;
+  final String description;
   final ListenableState<ThemeMode> themeState;
   final void Function(ThemeMode?) setThemeMode;
-  final bool isLoading = true;
+  final bool isLoading = false;
   final bool isEmpty = false;
   final VoidCallback openNextScreen;
 
   const _Body({
+    required this.name,
+    required this.description,
     required this.themeState,
     required this.setThemeMode,
     required this.openNextScreen,
@@ -55,115 +68,113 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return isLoading
         ? const _LoadingStateWidget()
-        : SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: AppColors.backgroundColor,
-                title: Text(
-                  'Медицинская карта ',
-                  style: AppTextStyle.bold30.value.copyWith(color: AppColors.black),
-                ),
-              ),
-              backgroundColor: AppColors.backgroundColor,
-              body: isEmpty
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        : Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: AppColors.backgroundColor,
+            title: Text(
+              'Медицинская карта ',
+              style: AppTextStyle.bold30.value.copyWith(color: AppColors.black),
+            ),
+          ),
+          backgroundColor: AppColors.backgroundColor,
+          body: isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 25),
+                      child: Text(
+                        'Медицинские карты отсутствуют',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.semiBold16.value,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      child: AppButtonWidget(
+                        title: 'Добавить карту',
+                      ),
+                    ),
+                  ],
+                )
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 25),
+                          padding: const EdgeInsets.only(bottom: 8),
                           child: Text(
-                            'Медицинские карты отсутствуют',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyle.semiBold16.value,
+                            name,
+                            style: AppTextStyle.bold22.value,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50),
-                          child: AppButtonWidget(
-                            title: 'Добавить карту',
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            'Анамнез:',
+                            style: AppTextStyle.bold16.value,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                              description,
+                              style: AppTextStyle.regular16.value),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 31),
+                          child: Text(
+                            'Мои врачи',
+                            style: AppTextStyle.bold22.value,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 31),
+                          child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 2,
+                            itemBuilder: (context, index) {
+                              return const AppDoctorWidget(
+                                doctor: 'Тепапевт',
+                                doctorName: 'Доктор Курпатов',
+                                bio: '',
+                              );
+                            },
+                            separatorBuilder: (context, index) => const SizedBox(
+                              height: 16,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 22),
+                          child: Text(
+                            'Последние посещения',
+                            style: AppTextStyle.bold22.value,
+                          ),
+                        ),
+                        ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return const AppItemWidget(
+                              title: 'Терапевт',
+                              textInfo: '20 Июня 2023',
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 16,
                           ),
                         ),
                       ],
-                    )
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Text(
-                                'Спосокукоцкий Вячеслав Владимирович',
-                                style: AppTextStyle.bold22.value,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Text(
-                                'Анамнез:',
-                                style: AppTextStyle.bold16.value,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Text(
-                                  'Считает себя больным с осени 2011 г., когда впервые после еды по-явились ноющие боли в эпигастральной области, изжога.',
-                                  style: AppTextStyle.regular16.value),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 31),
-                              child: Text(
-                                'Мои врачи',
-                                style: AppTextStyle.bold22.value,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 31),
-                              child: ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return const AppDoctorWidget(
-                                    doctor: 'Тепапевт',
-                                    doctorName: 'Доктор Курпатов',
-                                    bio: '',
-                                  );
-                                },
-                                separatorBuilder: (context, index) => const SizedBox(
-                                  height: 16,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 22),
-                              child: Text(
-                                'Последние посещения',
-                                style: AppTextStyle.bold22.value,
-                              ),
-                            ),
-                            ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return const AppItemWidget(
-                                  title: 'Терапевт',
-                                  textInfo: '20 Июня 2023',
-                                );
-                              },
-                              separatorBuilder: (context, index) => const SizedBox(
-                                height: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
-            ),
-          );
+                  ),
+                ),
+        );
   }
 }
 

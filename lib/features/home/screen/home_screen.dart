@@ -86,6 +86,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
   }
 }
 
+
 class _NotificationsWidget extends StatelessWidget {
   final String doctor;
   final String notice;

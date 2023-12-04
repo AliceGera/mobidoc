@@ -4,7 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
-import 'package:flutter_template/features/common/domain/data/services_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/services_data.dart';
 import 'package:flutter_template/features/common/widgets/app_error_widget.dart';
 import 'package:flutter_template/features/common/widgets/app_item_loading_widget.dart';
 import 'package:flutter_template/features/common/widgets/app_item_widget.dart';

@@ -34,22 +34,25 @@ class AppItemWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyle.semiBold18.value.copyWith(
-                      color: AppColors.black,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTextStyle.semiBold18.value.copyWith(
+                        color: AppColors.black,
+                      ),
                     ),
-                  ),
-                  Text(
-                    textInfo,
-                    style: AppTextStyle.medium14.value.copyWith(
-                      color: AppColors.darkGray,
+                    Text(
+                      textInfo,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyle.medium14.value.copyWith(
+                        color: AppColors.darkGray,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Stack(
                 alignment: Alignment.center,
