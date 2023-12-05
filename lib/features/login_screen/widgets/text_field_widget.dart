@@ -11,7 +11,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final FormFieldValidator<String?>? validator;
 
-   TextFieldWidget({
+   const TextFieldWidget({
     required this.color,
     required this.focusedColor,
     super.key,
@@ -20,7 +20,6 @@ class TextFieldWidget extends StatelessWidget {
     this.validator,
     this.textController,
   });
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

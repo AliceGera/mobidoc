@@ -174,7 +174,6 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   @override
   UnionStateNotifier<MedicalCards> get medicalCardsState => _medicalCardsState;
 
-  @override
   List<String> get qrCodeList => _qrCodeList;
 
   @override

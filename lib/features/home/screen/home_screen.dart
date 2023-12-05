@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, avoid_field_initializers_in_const_classes
+
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_template/features/common/widgets/app_item_loading_widget
 import 'package:flutter_template/features/common/widgets/app_item_widget.dart';
 import 'package:flutter_template/features/home/screen/home_screen_widget_model.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
-import 'package:shimmer/shimmer.dart';
 
 /// Main widget for HomeScreen feature.
 @RoutePage(
@@ -40,7 +41,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 50),
                     child: _NotificationsWidget(
-                      isShimer: isLoading,
+                      isShimmer: isLoading,
                       notice: 'Уведомления',
                       doctor: 'Терапевт',
                       textFirst: 'Autoestima 2/5',
@@ -93,7 +94,7 @@ class _NotificationsWidget extends StatelessWidget {
   final String textFirst;
   final String textSecond;
   final String textThird;
-  final bool isShimer;
+  final bool isShimmer;
 
   const _NotificationsWidget({
     required this.doctor,
@@ -101,7 +102,7 @@ class _NotificationsWidget extends StatelessWidget {
     required this.textFirst,
     required this.textSecond,
     required this.textThird,
-    required this.isShimer,
+    required this.isShimmer,
   });
 
   @override
@@ -127,7 +128,7 @@ class _NotificationsWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                isShimer ? '' : notice,
+                isShimmer ? '' : notice,
                 style: AppTextStyle.semiBold16.value.copyWith(
                   color: AppColors.darkGray,
                 ),
@@ -135,7 +136,7 @@ class _NotificationsWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 14),
                 child: Text(
-                  isShimer ? '' : doctor,
+                  isShimmer ? '' : doctor,
                   style: AppTextStyle.semiBold18.value,
                 ),
               ),
@@ -144,7 +145,7 @@ class _NotificationsWidget extends StatelessWidget {
                   children: [
                     Container(
                       width: 5,
-                      color: isShimer ? Colors.transparent : AppColors.gray,
+                      color: isShimmer ? Colors.transparent : AppColors.gray,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -152,15 +153,15 @@ class _NotificationsWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            isShimer ? '' : 'textFirst',
+                            isShimmer ? '' : 'textFirst',
                             style: AppTextStyle.semiBold12.value,
                           ),
                           Text(
-                            isShimer ? '' : textSecond,
+                            isShimmer ? '' : textSecond,
                             style: AppTextStyle.medium12.value,
                           ),
                           Text(
-                            isShimer ? '' : textThird,
+                            isShimmer ? '' : textThird,
                             style: AppTextStyle.medium12.value.copyWith(
                               color: AppColors.black.withOpacity(.5),
                             ),
@@ -182,7 +183,7 @@ class _NotificationsWidget extends StatelessWidget {
 class _ProfileWidget extends StatelessWidget {
   final String name;
 
-  _ProfileWidget({required this.name});
+  const _ProfileWidget({required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -325,7 +326,7 @@ class _LoadingProfileWidget extends StatelessWidget {
                       ),
                     ),
                     CustomPaint(
-                      size: Size(100, 100),
+                      size: const Size(100, 100),
                       painter: CirclePainter(),
                     ),
                   ],
@@ -335,34 +336,6 @@ class _LoadingProfileWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _LastVisits extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 25),
-      child: SizedBox(
-        child: Shimmer.fromColors(
-          baseColor: AppColors.lightBlueItem,
-          highlightColor: AppColors.lightBlueItem.withOpacity(0.4),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: AppColors.lightBlueItem,
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Text(
-                'Последние посещения',
-                style: AppTextStyle.semiBold18.value.copyWith(color: Colors.transparent),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

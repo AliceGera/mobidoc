@@ -26,7 +26,6 @@ class OnboardingScreen extends ElementaryWidget<IOnboardingScreenWidgetModel> {
 }
 
 class OnboardingScreenBody extends StatefulWidget {
-  // ignore: public_member_api_docs
   final IOnboardingScreenWidgetModel wm;
 
   const OnboardingScreenBody({
@@ -44,68 +43,66 @@ class _OnboardingScreenState extends State<OnboardingScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        appBar: _AppBarOnboardingWidget(
-          index: index,
-          openLogin: widget.wm.openLogin,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  physics: const BouncingScrollPhysics(),
-                  controller: controller,
-                  onPageChanged: (idx) {
-                    setState(() {
-                      index = idx;
-                    });
-                  },
-                  children: const <Widget>[
-                    _MainWidget(
-                      assetName: 'assets/images/onboarding_first.svg',
-                      title: 'Обращайтесь к врачу',
-                      subtitle: 'Консультациия посредством мобильной связи',
-                    ),
-                    _MainWidget(
-                      assetName: 'assets/images/onboarding_second.svg',
-                      title: 'Большой ассортимент',
-                      subtitle: 'Большой ассортимент врачей, с которыми можно пообщаться',
-                    ),
-                    _MainWidget(
-                      assetName: 'assets/images/onboarding_third.svg',
-                      title: 'Электронная медкарта',
-                      subtitle: 'Возможность использования смартфона в качестве медкарты',
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: _AppBarOnboardingWidget(
+        index: index,
+        openLogin: widget.wm.openLogin,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView(
+                physics: const BouncingScrollPhysics(),
+                controller: controller,
+                onPageChanged: (idx) {
+                  setState(() {
+                    index = idx;
+                  });
+                },
+                children: const <Widget>[
+                  _MainWidget(
+                    assetName: 'assets/images/onboarding_first.svg',
+                    title: 'Обращайтесь к врачу',
+                    subtitle: 'Консультациия посредством мобильной связи',
+                  ),
+                  _MainWidget(
+                    assetName: 'assets/images/onboarding_second.svg',
+                    title: 'Большой ассортимент',
+                    subtitle: 'Большой ассортимент врачей, с которыми можно пообщаться',
+                  ),
+                  _MainWidget(
+                    assetName: 'assets/images/onboarding_third.svg',
+                    title: 'Электронная медкарта',
+                    subtitle: 'Возможность использования смартфона в качестве медкарты',
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 21, top: 30),
-                child: AppButtonWidget(
-                  title: index == 0
-                      ? 'Ох ты!'
-                      : index == 1
-                          ? 'Обалдеть!'
-                          : index == 2
-                              ? 'Начать работу!'
-                              : '',
-                  onPressed: () async {
-                    if (index == 2) {
-                      await widget.wm.finishOnboarding();
-                      widget.wm.openLogin();
-                    } else {
-                      index++;
-                      controller.jumpToPage(index);
-                    }
-                  },
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 21, top: 30),
+              child: AppButtonWidget(
+                title: index == 0
+                    ? 'Ох ты!'
+                    : index == 1
+                        ? 'Обалдеть!'
+                        : index == 2
+                            ? 'Начать работу!'
+                            : '',
+                onPressed: () async {
+                  if (index == 2) {
+                    await widget.wm.finishOnboarding();
+                    widget.wm.openLogin();
+                  } else {
+                    index++;
+                    controller.jumpToPage(index);
+                  }
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

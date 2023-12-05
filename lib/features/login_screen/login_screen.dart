@@ -62,119 +62,118 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 25),
-            child: Text(
-              'Войти',
-              style: AppTextStyle.bold22.value.copyWith(
-                color: AppColors.black,
-              ),
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 25),
+          child: Text(
+            'Войти',
+            style: AppTextStyle.bold22.value.copyWith(
+              color: AppColors.black,
             ),
           ),
         ),
-        body: LayoutBuilder(
-          builder: (context, viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: IntrinsicHeight(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 96, bottom: 10),
-                                child: Text(
-                                  'Логин',
-                                  style: AppTextStyle.regular16.value.copyWith(
-                                    color: AppColors.black,
-                                  ),
+      ),
+      body: LayoutBuilder(
+        builder: (context, viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 96, bottom: 10),
+                              child: Text(
+                                'Логин',
+                                style: AppTextStyle.regular16.value.copyWith(
+                                  color: AppColors.black,
                                 ),
                               ),
-                              TextFieldWidget(
-                                textController: textEmailController,
-                                hintText: 'example@1.com',
-                                color: AppColors.black,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Заполните поле';
-                                  }
-                                  if (value?.isValidEmail() ?? false) {
-                                    textEmailController.value = textEmailController.value.copyWith(text: value);
-                                    return null;
-                                  } else {
-                                    return 'example@1.com';
-                                  }
-                                },
-                                focusedColor: AppColors.darkBlue,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 30, bottom: 10),
-                                child: Text(
-                                  'Пароль',
-                                  style: AppTextStyle.regular16.value.copyWith(
-                                    color: AppColors.black,
-                                  ),
+                            ),
+                            TextFieldWidget(
+                              textController: textEmailController,
+                              hintText: 'example@1.com',
+                              color: AppColors.black,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Заполните поле';
+                                }
+                                if (value.isValidEmail() ) {
+                                  textEmailController.value = textEmailController.value.copyWith(text: value);
+                                  return null;
+                                } else {
+                                  return 'example@1.com';
+                                }
+                              },
+                              focusedColor: AppColors.darkBlue,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30, bottom: 10),
+                              child: Text(
+                                'Пароль',
+                                style: AppTextStyle.regular16.value.copyWith(
+                                  color: AppColors.black,
                                 ),
                               ),
-                              TextFieldWidget(
-                                textController: textPasswordController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Заполните поле';
-                                  }
-                                  textPasswordController.value = textPasswordController.value.copyWith(text: value);
-                                },
-                                obscureText: true,
-                                hintText: '**********',
-                                color: AppColors.black,
-                                focusedColor: AppColors.darkBlue,
-                              ),
-                              ValueListenableBuilder<bool>(
-                                builder: (
-                                  context,
-                                  value,
-                                  child,
-                                ) {
-                                  return value
-                                      ? const AppErrorWidget(
-                                          wrongText: 'Неверный логин/\nпароль',
-                                          isLogin: true,
-                                        )
-                                      : const SizedBox();
-                                },
-                                valueListenable: wrongValue,
-                              ),
-                            ],
-                          ),
+                            ),
+                            TextFieldWidget(
+                              textController: textPasswordController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Заполните поле';
+                                }
+                                textPasswordController.value = textPasswordController.value.copyWith(text: value);
+                                return null;
+                              },
+                              obscureText: true,
+                              hintText: '**********',
+                              color: AppColors.black,
+                              focusedColor: AppColors.darkBlue,
+                            ),
+                            ValueListenableBuilder<bool>(
+                              builder: (
+                                context,
+                                value,
+                                child,
+                              ) {
+                                return value
+                                    ? const AppErrorWidget(
+                                        wrongText: 'Неверный логин/\nпароль',
+                                        isLogin: true,
+                                      )
+                                    : const SizedBox();
+                              },
+                              valueListenable: wrongValue,
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 21, top: 30),
-                          child: AppButtonWidget(
-                            title: 'Войти',
-                            onPressed: openNextScreen,
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 21, top: 30),
+                        child: AppButtonWidget(
+                          title: 'Войти',
+                          onPressed: openNextScreen,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

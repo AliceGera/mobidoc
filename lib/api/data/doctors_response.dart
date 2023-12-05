@@ -4,7 +4,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'doctors_response.g.dart';
 
-// ignore: public_member_api_docs
 @JsonSerializable(explicitToJson: true)
 class DoctorsResponse {
   @JsonKey(name: 'hydra:member')

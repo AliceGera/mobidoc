@@ -42,7 +42,7 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends StatefulWidget {
   final ListenableState<bool> isFindQr;
   final ListenableState<bool> isFirstTime;
   final UnionStateNotifier<MedicalCards> medicalCardsState;
@@ -50,7 +50,7 @@ class _Body extends StatelessWidget {
   final void Function(QRViewController) onQRViewCreated;
   final void Function(BuildContext context) onShowModalBottomSheet;
 
-  _Body({
+  const _Body({
     required this.isFirstTime,
     required this.isFindQr,
     required this.medicalCardsState,
@@ -59,13 +59,18 @@ class _Body extends StatelessWidget {
     required this.onShowModalBottomSheet,
   });
 
+  @override
+  State<_Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<_Body> {
   GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return UnionStateListenableBuilder<MedicalCards>(
-      unionStateListenable: medicalCardsState,
+      unionStateListenable: widget.medicalCardsState,
       builder: (_, medicalCards) {
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
@@ -80,7 +85,7 @@ class _Body extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: isFindQr.value == false
+              child: widget.isFindQr.value == false
                   ? Column(
                       children: [
                         const Padding(
@@ -104,7 +109,7 @@ class _Body extends StatelessWidget {
                               builder: (context) {
                                 if (!isModalBottomSheetOpened) {
                                   isModalBottomSheetOpened = true;
-                                  onShowModalBottomSheet.call(context);
+                                  widget.onShowModalBottomSheet.call(context);
                                 }
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
@@ -155,7 +160,7 @@ class _Body extends StatelessWidget {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                openNextScreen(
+                                widget.openNextScreen(
                                   medicalCards.member[index].name ?? '',
                                   medicalCards.member[index].description ?? '',
                                 );
@@ -187,7 +192,7 @@ class _Body extends StatelessWidget {
                                 builder: (context) {
                                   if (!isModalBottomSheetOpened) {
                                     isModalBottomSheetOpened = true;
-                                    onShowModalBottomSheet.call(context);
+                                    widget.onShowModalBottomSheet.call(context);
                                   }
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
@@ -244,8 +249,8 @@ class _Body extends StatelessWidget {
     final scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
     return QRView(
       key: qrKey,
-      onQRViewCreated: onQRViewCreated,
-      overlay: QrScannerOverlayShape(borderColor: Colors.red, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
+      onQRViewCreated: widget.onQRViewCreated,
+      overlay: QrScannerOverlayShape(borderColor: AppColors.backgroundColor, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
