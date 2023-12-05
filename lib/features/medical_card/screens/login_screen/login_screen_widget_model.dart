@@ -68,7 +68,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
 
   @override
   void openOnboarding() {
-    router.push(const OnboardingRouter());
+    router.push( OnboardingRouter());
   }
 
   @override
