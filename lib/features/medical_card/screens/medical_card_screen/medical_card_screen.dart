@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_field_initializers_in_const_classes
+// ignore_for_file: avoid_field_initializers_in_const_classes, use_if_null_to_convert_nulls_to_bools
 
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/domain/data/medical_card/medical_cards_data.dart';
@@ -36,7 +37,9 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
         openNextScreen: wm.openNextScreen,
         onShowModalBottomSheet: wm.onShowModalBottomSheet,
         isFindQr: wm.isFindQr,
+        isShow: wm.isShow,
         isFirstTime: wm.isFirstTime,
+        someMethod: wm.someMethod,
       ),
     );
   }
@@ -44,19 +47,23 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
 
 class _Body extends StatefulWidget {
   final ListenableState<bool> isFindQr;
+  final ListenableState<bool> isShow;
   final ListenableState<bool> isFirstTime;
   final UnionStateNotifier<MedicalCards> medicalCardsState;
   final OpenNextScreen openNextScreen;
   final void Function(QRViewController) onQRViewCreated;
   final void Function(BuildContext context) onShowModalBottomSheet;
+  final VoidCallback someMethod;
 
   const _Body({
     required this.isFirstTime,
     required this.isFindQr,
+    required this.isShow,
     required this.medicalCardsState,
     required this.openNextScreen,
     required this.onQRViewCreated,
     required this.onShowModalBottomSheet,
+    required this.someMethod,
   });
 
   @override
@@ -78,162 +85,137 @@ class _BodyState extends State<_Body> {
             automaticallyImplyLeading: false,
             backgroundColor: AppColors.backgroundColor,
             title: Text(
-              'Медицинская карта ',
+              'Медицинская карта',
               style: AppTextStyle.bold30.value.copyWith(color: AppColors.black),
             ),
           ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: widget.isFindQr.value == false
-                  ? Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 150),
-                          child: AppErrorWidget(
-                            wrongText: 'Карта с таким ID не найдена в базе.',
-                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: medicalCards.member.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          widget.openNextScreen(
+                            medicalCards.member[index].name ?? '',
+                            medicalCards.member[index].description ?? '',
+                          );
+                        },
+                        child: AppItemWidget(
+                          title: medicalCards.member[index].name,
+                          textInfo: medicalCards.member[index].description,
                         ),
-                        AppButtonWidget(
-                          title: 'Повторить',
-                          onPressed: () {
-                            var isModalBottomSheetOpened = false;
-                            showModalBottomSheet<void>(
-                              backgroundColor: AppColors.white,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(40),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) {
-                                if (!isModalBottomSheetOpened) {
-                                  isModalBottomSheetOpened = true;
-                                  widget.onShowModalBottomSheet.call(context);
-                                }
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
-                                  child: Column(
-                                    children: [
-                                      Row(
+                      );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 16,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
+                    child: AppButtonWidget(
+                      title: 'Добавить карту',
+                      onPressed: () {
+                        var isModalBottomSheetOpened = false;
+                        showModalBottomSheet<void>(
+                          backgroundColor: AppColors.white,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(40),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) {
+                            if (!isModalBottomSheetOpened) {
+                              isModalBottomSheetOpened = true;
+                              widget.onShowModalBottomSheet.call(context);
+                            }
+                            return StateNotifierBuilder(
+                              listenableState: widget.isShow,
+                              builder: (context, isShowValue) {
+                                return StateNotifierBuilder(
+                                  listenableState: widget.isFindQr,
+                                  builder: (context, isFindQrValue) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
+                                      child: Column(
                                         children: [
-                                          InkWell(
-                                            onTap: () => Navigator.pop(context),
-                                            child: Text(
-                                              'Отмена',
-                                              style: AppTextStyle.medium16.value.copyWith(color: AppColors.darkBlue),
-                                            ),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () => Navigator.pop(context),
+                                                child: Text(
+                                                  'Отмена',
+                                                  style: AppTextStyle.medium16.value.copyWith(color: AppColors.darkBlue),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 40),
+                                                child: Text(
+                                                  'Добавить карту',
+                                                  style: AppTextStyle.bold20.value.copyWith(color: AppColors.black),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 40),
-                                            child: Text(
-                                              'Добавить карту',
-                                              style: AppTextStyle.bold20.value.copyWith(color: AppColors.black),
-                                            ),
+                                          Stack(
+                                            children: [
+                                              SizedBox(
+                                                height: size.height * 0.45,
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(flex: 4, child: _buildQrView(context)),
+                                                  ],
+                                                ),
+                                              ),
+                                              if (isFindQrValue == true && isShowValue == true)
+                                                Container(
+                                                  width: double.infinity,
+                                                  color: AppColors.backgroundColor.withOpacity(.5),
+                                                  height: size.height * 0.45,
+                                                  child: SvgPicture.asset('assets/images/check_circle.svg'),
+                                                ),
+                                              if (isFindQrValue == false && isShowValue == true)
+                                                Container(
+                                                  color: AppColors.backgroundColor.withOpacity(.5),
+                                                  height: size.height * 0.45,
+                                                  child: Column(
+                                                    children: [
+                                                      const Padding(
+                                                        padding: EdgeInsets.only(top: 150),
+                                                        child: AppErrorWidget(
+                                                          wrongText: 'Карта с таким ID не найдена в базе.',
+                                                        ),
+                                                      ),
+                                                      AppButtonWidget(
+                                                        title: 'Повторить',
+                                                        onPressed: widget.someMethod,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: size.height * 0.45,
-                                        child: Column(
-                                          children: [
-                                            Expanded(flex: 4, child: _buildQrView(context)),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 );
                               },
                             );
                           },
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: medicalCards.member.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                widget.openNextScreen(
-                                  medicalCards.member[index].name ?? '',
-                                  medicalCards.member[index].description ?? '',
-                                );
-                              },
-                              child: AppItemWidget(
-                                title: medicalCards.member[index].name,
-                                textInfo: medicalCards.member[index].description,
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: 16,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 20),
-                          child: AppButtonWidget(
-                            title: 'Добавить карту',
-                            onPressed: () {
-                              var isModalBottomSheetOpened = false;
-                              showModalBottomSheet<void>(
-                                backgroundColor: AppColors.white,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(40),
-                                  ),
-                                ),
-                                context: context,
-                                builder: (context) {
-                                  if (!isModalBottomSheetOpened) {
-                                    isModalBottomSheetOpened = true;
-                                    widget.onShowModalBottomSheet.call(context);
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () => Navigator.pop(context),
-                                              child: Text(
-                                                'Отмена',
-                                                style: AppTextStyle.medium16.value.copyWith(color: AppColors.darkBlue),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 40),
-                                              child: Text(
-                                                'Добавить карту',
-                                                style: AppTextStyle.bold20.value.copyWith(color: AppColors.black),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: size.height * 0.45,
-                                          child: Column(
-                                            children: [
-                                              Expanded(flex: 4, child: _buildQrView(context)),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

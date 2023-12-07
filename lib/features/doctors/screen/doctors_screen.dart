@@ -37,34 +37,40 @@ class DoctorsScreen extends ElementaryWidget<IDoctorsScreenWidgetModel> {
               style: AppTextStyle.bold30.value.copyWith(color: AppColors.black),
             ),
           ),
-          body: doctors?.hasError == true ? const AppErrorWidget(wrongText: 'Что-то пошло не так!\nПовторите попытку.',):SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 31),
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 2,
-                      itemBuilder: (context, index) {
-                        return doctors?.isLoading == true?  const AppItemLoadingWidget() : AppDoctorWidget(
-                          doctor: doctors?.data?.member[index].speciality ?? '',
-                          doctorName: doctors?.data?.member[index].name ?? '',
-                          bio: doctors?.data?.member[index].bio ?? '',
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 28,
-                      ),
+          body: doctors?.hasError == true
+              ? const AppErrorWidget(
+                  wrongText: 'Что-то пошло не так!\nПовторите попытку.',
+                )
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 31),
+                          child: ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 2,
+                            itemBuilder: (context, index) {
+                              return doctors?.isLoading == true
+                                  ? const AppItemLoadingWidget()
+                                  : AppDoctorWidget(
+                                      doctor: doctors?.data?.member[index].speciality ?? '',
+                                      doctorName: doctors?.data?.member[index].name ?? '',
+                                      bio: doctors?.data?.member[index].bio ?? '',
+                                    );
+                            },
+                            separatorBuilder: (context, index) => const SizedBox(
+                              height: 28,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
         );
       },
     );

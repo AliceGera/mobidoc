@@ -30,7 +30,7 @@ class AppItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 17),
+          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 17),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

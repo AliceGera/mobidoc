@@ -55,6 +55,7 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   bool isBarcodeChecking = false;
   List<String> _qrCodeList = [];
   late final StateNotifier<bool> _isFindQr;
+  late final StateNotifier<bool> _isShow;
   late final StateNotifier<bool> _isFirstTime;
 
   @override
@@ -71,6 +72,9 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   ListenableState<bool> get isFindQr => _isFindQr;
 
   @override
+  ListenableState<bool> get isShow => _isShow;
+
+  @override
   ListenableState<bool> get isFirstTime => _isFirstTime;
 
   @override
@@ -85,6 +89,7 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
     _getAllMedicalCards(null);
     super.initWidgetModel();
     _isFindQr = StateNotifier<bool>(initValue: true);
+    _isShow = StateNotifier<bool>(initValue: false);
     _isFirstTime = StateNotifier<bool>(initValue: true);
     _qrControllerValue = ValueNotifier(null);
     _controller = controller;
@@ -94,13 +99,16 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
 
   Future<void> _getAllMedicalCards(String? result) async {
     _medicalCardsState.loading();
+    var isContainQR = false;
     try {
       final medicalCards = await model.getMedicalCards();
       if (result != null) {
         _qrCodeList.add(result);
         _qrCodeList.toSet().toList();
-        await addQRCodeList();
-        final isContainQR = medicalCards.member.where((e) => e.number.toString() == result).toList().isNotEmpty;
+        isContainQR = medicalCards.member.where((e) => e.number.toString() == result).toList().isNotEmpty;
+        if (isContainQR) {
+          await addQRCodeList();
+        }
         _isFindQr.accept(isContainQR);
       }
 
@@ -111,9 +119,22 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
         }
       }
       _medicalCardsState.content(MedicalCards(member: members));
-      isBarcodeChecking = false;
+
+      if (result == null) {
+        isBarcodeChecking = false;
+      } else {
+        _isShow.accept(true);
+      }
+      await Future.delayed(const Duration(seconds: 3));
+      if (bottomSheetContext != null && isContainQR) {
+        Navigator.of(bottomSheetContext!).pop();
+        await Future.delayed(const Duration(seconds: 1));
+        isBarcodeChecking = false;
+        _isShow.accept(false);
+      }
       // ignore: avoid_catches_without_on_clauses
     } catch (_) {
+      //_isShow.accept(true);
       _medicalCardsState.failure();
       isBarcodeChecking = false;
     }
@@ -131,6 +152,12 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   }
 
   @override
+  void someMethod() {
+    isBarcodeChecking = false;
+    _isShow.accept(false);
+  }
+
+  @override
   void setThemeMode(ThemeMode? themeMode) {
     if (themeMode == null) return;
     model.setThemeMode(themeMode);
@@ -141,8 +168,8 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   }
 
   @override
-  void openNextScreen(String name,String description) {
-    router.push(InfoAboutMedicalCardRouter(name:name,description:description));
+  void openNextScreen(String name, String description) {
+    router.push(InfoAboutMedicalCardRouter(name: name, description: description));
   }
 
   @override
@@ -151,14 +178,6 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
     _controller?.scannedDataStream.listen(
       (scanData) {
         if (!isBarcodeChecking) {
-          if (bottomSheetContext != null) {
-            if (kDebugMode) {
-              print(11111);
-              print(bottomSheetContext != null);
-            }
-
-            Navigator.of(bottomSheetContext!).pop();
-          }
           isBarcodeChecking = true;
           _getAllMedicalCards(scanData.code.toString());
         }
@@ -193,6 +212,8 @@ abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
 
   ListenableState<bool> get isFindQr;
 
+  ListenableState<bool> get isShow;
+
   ListenableState<bool> get isFirstTime;
 
   /// Method to close the debug screens.
@@ -202,7 +223,7 @@ abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
   void setThemeMode(ThemeMode? themeMode) {}
 
   /// Navigate to info about medical card screen.
-  void openNextScreen(String name,String description);
+  void openNextScreen(String name, String description);
 
   void onQRViewCreated(QRViewController controller);
 
@@ -211,4 +232,6 @@ abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
   QRViewController? get controller;
 
   ValueNotifier<QRViewController?> get qrControllerValue;
+
+  void someMethod();
 }

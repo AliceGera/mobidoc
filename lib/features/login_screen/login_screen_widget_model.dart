@@ -73,7 +73,8 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
 
   @override
   void dispose() {
-    TextEditingController();
+    _textEmailController.dispose();
+    _textPasswordController.dispose();
     super.dispose();
   }
 

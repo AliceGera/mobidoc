@@ -81,7 +81,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
               ),
             ),
           ],
-        )),
+        ),),
       ),
     );
   }
