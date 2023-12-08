@@ -65,31 +65,29 @@ class ServicesScreen extends ElementaryWidget<IServicesScreenWidgetModel> {
           ),
         );
       },
-      loadingBuilder: (_, services) => SafeArea(
-        child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Text('Услуги', style: AppTextStyle.bold30.value),
+      loadingBuilder: (_, services) => Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text('Услуги', style: AppTextStyle.bold30.value),
+              ),
+              ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return const AppItemLoadingWidget();
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 16,
                 ),
-                ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const AppItemLoadingWidget();
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 16,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

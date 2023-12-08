@@ -22,15 +22,14 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
     Key? key,
     WidgetModelFactory wmFactory = homeScreenWmFactory,
   }) : super(wmFactory, key: key);
-  final bool isLoading = true;
+  final bool isLoading = false;
 
   @override
   Widget build(IHomeScreenWidgetModel wm) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             isLoading ? _LoadingProfileWidget() : _ProfileWidget(name: 'Григорий Плювкин'),
             Padding(
@@ -39,7 +38,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
+                    padding: const EdgeInsets.only(bottom: 40),
                     child: _NotificationsWidget(
                       isShimmer: isLoading,
                       notice: 'Уведомления',
@@ -55,7 +54,7 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                           child: AppItemLoadingWidget(text: 'Последние посещения'),
                         )
                       : Padding(
-                          padding: const EdgeInsets.only(top: 50, bottom: 20),
+                          padding: const EdgeInsets.only( bottom: 0),
                           child: Text(
                             'Последние посещения',
                             style: AppTextStyle.bold20.value,
@@ -76,17 +75,17 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 16,
                     ),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                   ),
                 ],
               ),
             ),
           ],
-        )),
+        ),
       ),
     );
   }
 }
-
 
 class _NotificationsWidget extends StatelessWidget {
   final String doctor;
@@ -187,7 +186,8 @@ class _ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return Container(
+      height: 250,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
         gradient: LinearGradient(
@@ -200,7 +200,7 @@ class _ProfileWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        padding: const EdgeInsets.only(right: 16, bottom: 32,left: 16,top:62),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -282,7 +282,7 @@ class _LoadingProfileWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 210,
+          height: 250,
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
             gradient: LinearGradient(
@@ -296,9 +296,9 @@ class _LoadingProfileWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 210,
+          height: 250,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+            padding: const EdgeInsets.only(right: 16,left: 16, top: 62),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
