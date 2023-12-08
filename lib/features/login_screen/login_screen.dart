@@ -3,7 +3,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
+import 'package:flutter_template/assets/res/resources.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
 import 'package:flutter_template/features/login_screen/login_screen_widget_model.dart';
@@ -33,6 +35,7 @@ class LoginScreen extends ElementaryWidget<ILoginScreenWidgetModel> {
       body: _Body(
         textPasswordController: wm.textPasswordController,
         textEmailController: wm.textEmailController,
+        wrongValue: wm.wrongValue,
         themeState: wm.themeState,
         openNextScreen: wm.openNextScreen,
         setThemeMode: wm.setThemeMode,
@@ -45,10 +48,12 @@ class _Body extends StatelessWidget {
   final ListenableState<ThemeMode> themeState;
   final void Function(ThemeMode?) setThemeMode;
   final TextEditingController textEmailController;
+  final ValueNotifier<bool> wrongValue;
   final TextEditingController textPasswordController;
   final VoidCallback openNextScreen;
 
   const _Body({
+    required this.wrongValue,
     required this.themeState,
     required this.setThemeMode,
     required this.openNextScreen,
@@ -74,72 +79,127 @@ class _Body extends StatelessWidget {
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 96, bottom: 10),
-                child: Text(
-                  'Логин',
-                  style: AppTextStyle.regular16.value.copyWith(
-                    color: AppColors.black,
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 96, bottom: 10),
+                                child: Text(
+                                  'Логин',
+                                  style: AppTextStyle.regular16.value.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ),
+                              TextFieldWidget(
+                                textController: textEmailController,
+                                hintText: 'example@1.com',
+                                color: AppColors.black,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Заполните поле';
+                                  }
+                                  if (value?.isValidEmail() ?? false) {
+                                    textEmailController.value = textEmailController.value.copyWith(text: value);
+                                    return null;
+                                  } else {
+                                    return 'example@1.com';
+                                  }
+                                },
+                                focusedColor: AppColors.darkBlue,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 30, bottom: 10),
+                                child: Text(
+                                  'Пароль',
+                                  style: AppTextStyle.regular16.value.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ),
+                              TextFieldWidget(
+                                textController: textPasswordController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Заполните поле';
+                                  }
+                                  textPasswordController.value = textPasswordController.value.copyWith(text: value);
+                                },
+                                obscureText: true,
+                                hintText: '**********',
+                                color: AppColors.black,
+                                focusedColor: AppColors.darkBlue,
+                              ),
+                              ValueListenableBuilder<bool>(
+                                builder: (
+                                  BuildContext context,
+                                  bool value,
+                                  Widget? child,
+                                ) {
+                                  return value ? const _WrongValuesWidget() : SizedBox();
+                                },
+                                valueListenable: wrongValue,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 21, top: 30),
+                          child: AppButtonWidget(
+                            title: 'Войти',
+                            onPressed: openNextScreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              TextFieldWidget(
-                textController: textEmailController,
-                hintText: 'example@1.com',
-                color: AppColors.black,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Заполните поле';
-                  }
-                  if (value?.isValidEmail() ?? false) {
-                    textEmailController.value = textEmailController.value.copyWith(text: value);
-                    return null;
-                  } else {
-                    return 'example@1.com';
-                  }
-                },
-                focusedColor: AppColors.darkBlue,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 10),
-                child: Text(
-                  'Пароль',
-                  style: AppTextStyle.regular16.value.copyWith(
-                    color: AppColors.black,
-                  ),
-                ),
-              ),
-              TextFieldWidget(
-                textController: textPasswordController ,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Заполните поле';
-                  }
-                  textPasswordController.value = textPasswordController.value.copyWith(text: value);
-
-                },
-                obscureText: true,
-                hintText: '**********',
-                color: AppColors.black,
-                focusedColor: AppColors.darkBlue,
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 21, top: 30),
-                child: AppButtonWidget(
-                  title: 'Войти',
-                  onPressed: openNextScreen,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
+    );
+  }
+}
+
+class _WrongValuesWidget extends StatelessWidget {
+  const _WrongValuesWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 36),
+            child: SvgPicture.asset(SvgIcons.iconWrongPasswordEmail),
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              'Неверный логин/\nпароль',
+              style: AppTextStyle.semiBold18.value,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

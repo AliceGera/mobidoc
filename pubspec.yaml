@@ -26,13 +26,13 @@ dependencies:
   retrofit: 4.0.1
   shared_preferences: 2.1.0
   surf_logger: 1.1.0
+  flutter_native_splash: ^2.3.6
 
 dev_dependencies:
   auto_route_generator: 7.1.1
   build_runner: 2.3.3
   elementary_test: 1.1.3
   flutter_launcher_icons: 0.13.1
-  flutter_native_splash: 2.3.1
   flutter_test:
     sdk: flutter
   golden_toolkit: 0.15.0
@@ -45,7 +45,6 @@ dev_dependencies:
 environment:
     sdk: '>=3.0.5 <4.0.0'
     flutter: 3.10.6
-
 
 flutter:
   uses-material-design: true
