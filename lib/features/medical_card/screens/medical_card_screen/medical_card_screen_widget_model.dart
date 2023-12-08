@@ -1,24 +1,32 @@
 // ignore_for_file: public_member_api_docs
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/config/environment/environment.dart';
 import 'package:flutter_template/features/app/di/app_scope.dart';
+import 'package:flutter_template/features/common/domain/data/medical_card/medical_cards_data.dart';
+import 'package:flutter_template/features/common/domain/data/medical_card/medical_cards_member_data.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen_model.dart';
 import 'package:flutter_template/features/navigation/service/router.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:union_state/union_state.dart';
 
 // ignore_for_file: avoid_positional_boolean_parameters
+typedef OpenNextScreen = void Function(String name, String description);
 
 /// Factory for [MedicalCardScreenWidgetModel].
 MedicalCardScreenWidgetModel medicalCardScreenWidgetModelFactory(
   BuildContext context,
 ) {
   final appDependencies = context.read<IAppScope>();
+  final sharedPreferences = appDependencies.sharedPreferences;
   Barcode? result;
   QRViewController? controller;
   final model = MedicalCardScreenModel(
+    appDependencies.medicalCardsService,
     appDependencies.errorHandler,
     Environment.instance(),
     result,
@@ -27,43 +35,88 @@ MedicalCardScreenWidgetModel medicalCardScreenWidgetModelFactory(
   );
   final router = appDependencies.router;
 
-  return MedicalCardScreenWidgetModel(model, router);
+  return MedicalCardScreenWidgetModel(
+    sharedPreferences,
+    model,
+    router,
+  );
 }
 
 /// Widget Model for [MedicalCardScreen].
 class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, MedicalCardScreenModel> implements IMedicalCardScreenWidgetModel {
   /// Class that coordinates navigation for the whole app.
+  final SharedPreferences sharedPreferences;
   final AppRouter router;
   final _themeState = StateNotifier<ThemeMode>();
-  Barcode? _result;
+  BuildContext? bottomSheetContext;
   QRViewController? _controller;
   late final ValueNotifier<QRViewController?> _qrControllerValue;
+  final _medicalCardsState = UnionStateNotifier<MedicalCards>(MedicalCards.init());
+  bool isBarcodeChecking = false;
+  List<String> _qrCodeList = [];
+  late final StateNotifier<bool> _isFindQr;
+  late final StateNotifier<bool> _isFirstTime;
 
   @override
   ListenableState<ThemeMode> get themeState => _themeState;
 
   /// Create an instance [MedicalCardScreenModel].
   MedicalCardScreenWidgetModel(
+    this.sharedPreferences,
     super._model,
     this.router,
   );
 
   @override
-  QRViewController? get controller => _controller;
+  ListenableState<bool> get isFindQr => _isFindQr;
 
   @override
-  Barcode? get result => _result;
+  ListenableState<bool> get isFirstTime => _isFirstTime;
+
+  @override
+  QRViewController? get controller => _controller;
 
   @override
   ValueNotifier<QRViewController?> get qrControllerValue => _qrControllerValue;
 
   @override
   void initWidgetModel() {
+    _qrCodeList = sharedPreferences.getStringList('QRCodeList') ?? [];
+    _getAllMedicalCards(null);
     super.initWidgetModel();
+    _isFindQr = StateNotifier<bool>(initValue: true);
+    _isFirstTime = StateNotifier<bool>(initValue: true);
     _qrControllerValue = ValueNotifier(null);
     _controller = controller;
     model.currentThemeMode.addListener(_updateThemeMode);
     _themeState.accept(model.currentThemeMode.value);
+  }
+
+  Future<void> _getAllMedicalCards(String? result) async {
+    _medicalCardsState.loading();
+    try {
+      final medicalCards = await model.getMedicalCards();
+      if (result != null) {
+        _qrCodeList.add(result);
+        _qrCodeList.toSet().toList();
+        await addQRCodeList();
+        final isContainQR = medicalCards.member.where((e) => e.number.toString() == result).toList().isNotEmpty;
+        _isFindQr.accept(isContainQR);
+      }
+
+      final members = <MedicalCardsMember>[];
+      for (var i = 0; i < medicalCards.member.length; i++) {
+        if (_qrCodeList.contains(medicalCards.member[i].number.toString())) {
+          members.add(medicalCards.member[i]);
+        }
+      }
+      _medicalCardsState.content(MedicalCards(member: members));
+      isBarcodeChecking = false;
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {
+      _medicalCardsState.failure();
+      isBarcodeChecking = false;
+    }
   }
 
   @override
@@ -88,8 +141,8 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   }
 
   @override
-  void openNextScreen() {
-    router.push(InfoAboutMedicalCardRouter());
+  void openNextScreen(String name,String description) {
+    router.push(InfoAboutMedicalCardRouter(name:name,description:description));
   }
 
   @override
@@ -97,16 +150,50 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
     _controller = controller;
     _controller?.scannedDataStream.listen(
       (scanData) {
-        _result = scanData;
+        if (!isBarcodeChecking) {
+          if (bottomSheetContext != null) {
+            if (kDebugMode) {
+              print(11111);
+              print(bottomSheetContext != null);
+            }
+
+            Navigator.of(bottomSheetContext!).pop();
+          }
+          isBarcodeChecking = true;
+          _getAllMedicalCards(scanData.code.toString());
+        }
       },
     );
+  }
+
+  @override
+  void onShowModalBottomSheet(BuildContext context) {
+    bottomSheetContext = context;
+  }
+
+  @override
+  UnionStateNotifier<MedicalCards> get medicalCardsState => _medicalCardsState;
+
+  List<String> get qrCodeList => _qrCodeList;
+
+  @override
+  Future<void> addQRCodeList() async {
+    await sharedPreferences.setStringList('QRCodeList', _qrCodeList);
   }
 }
 
 /// Interface of [MedicalCardScreenWidgetModel].
 abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
+  Future<void> addQRCodeList();
+
+  UnionStateNotifier<MedicalCards> get medicalCardsState;
+
   /// Listener current state [ThemeMode].
   ListenableState<ThemeMode> get themeState;
+
+  ListenableState<bool> get isFindQr;
+
+  ListenableState<bool> get isFirstTime;
 
   /// Method to close the debug screens.
   void closeScreen() {}
@@ -115,13 +202,13 @@ abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
   void setThemeMode(ThemeMode? themeMode) {}
 
   /// Navigate to info about medical card screen.
-  void openNextScreen();
+  void openNextScreen(String name,String description);
 
   void onQRViewCreated(QRViewController controller);
 
-  QRViewController? get controller;
+  void onShowModalBottomSheet(BuildContext context);
 
-  Barcode? get result;
+  QRViewController? get controller;
 
   ValueNotifier<QRViewController?> get qrControllerValue;
 }

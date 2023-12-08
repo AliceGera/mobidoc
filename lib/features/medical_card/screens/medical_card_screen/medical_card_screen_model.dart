@@ -1,7 +1,11 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/config/app_config.dart';
 import 'package:flutter_template/config/environment/environment.dart';
+import 'package:flutter_template/features/common/domain/data/medical_card/medical_cards_data.dart';
+import 'package:flutter_template/features/common/service/medical_cards_service.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service.dart';
 import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -11,6 +15,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 /// Model for [MedicalCardScreen].
 class MedicalCardScreenModel extends ElementaryModel {
   /// Interface for handle error in business logic.
+
+  final MedicalCardsService _medicalCardsService;
+
   final ErrorHandler errorHandler;
 
   final Barcode? result;
@@ -30,8 +37,9 @@ class MedicalCardScreenModel extends ElementaryModel {
 
   /// Create an instance [MedicalCardScreenModel].
   MedicalCardScreenModel(
-      this.errorHandler,
-      this._environment,
+    this._medicalCardsService,
+    this.errorHandler,
+    this._environment,
     this.result,
     this.controller,
     this._themeService,
@@ -44,8 +52,6 @@ class MedicalCardScreenModel extends ElementaryModel {
     _themeService.addListener(_updateTheme);
     _environment.addListener(_environmentChangedCallback);
   }
-
-
 
   @override
   void dispose() {
@@ -64,5 +70,14 @@ class MedicalCardScreenModel extends ElementaryModel {
 
   void _updateTheme() {
     currentThemeMode.value = _themeService.currentThemeMode;
+  }
+
+  Future<MedicalCards> getMedicalCards() async {
+    try {
+      final medicalCards = await _medicalCardsService.getMedicalCards();
+      return medicalCards;
+    } on Object {
+      rethrow;
+    }
   }
 }

@@ -88,5 +88,7 @@ abstract class IInfoAboutMedicalCardScreenWidgetModel extends IWidgetModel {
 
   /// Navigate to info about medical card screen.
   void openNextScreen();
+
+  /// add medical card.
   void addMedicalCard();
 }

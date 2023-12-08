@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:elementary/elementary.dart';
-import 'package:flutter_template/features/common/domain/data/services_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/services_data.dart';
 import 'package:flutter_template/features/common/service/services_service.dart';
 import 'package:flutter_template/features/services/screen/services_screen.dart';
 

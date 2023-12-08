@@ -39,7 +39,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   late final ValueNotifier<bool> _wrongValue;
 
   final AppRouter _appRouter;
-  final SharedPreferences _prefs;
+  final SharedPreferences prefs;
   final _themeState = StateNotifier<ThemeMode>();
 
   @override
@@ -49,7 +49,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   LoginScreenWidgetModel(
     super._model,
     this._appRouter,
-    this._prefs,
+    this.prefs,
   );
 
   @override

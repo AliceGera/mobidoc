@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter_template/api/service/services_api.dart';
-import 'package:flutter_template/features/common/domain/data/services_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/services_data.dart';
 
 import 'package:flutter_template/features/common/domain/repository/mappers/services_mapper.dart';
 

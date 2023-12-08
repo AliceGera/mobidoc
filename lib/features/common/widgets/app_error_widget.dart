@@ -40,7 +40,7 @@ class AppErrorWidget extends StatelessWidget {
               ),
             ),
           ),
-          isLogin == true ? SizedBox() : AppButtonWidget(title: 'Повторить'),
+          //isLogin == true ? SizedBox() : AppButtonWidget(title: 'Повторить'),
         ],
       ),
     );

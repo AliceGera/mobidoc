@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, non_constant_identifier_names, avoid_catches_without_on_clauses
 
 import 'package:elementary/elementary.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/features/app/di/app_scope.dart';
-import 'package:flutter_template/features/common/domain/data/services_data.dart';
+import 'package:flutter_template/features/common/domain/data/services/services_data.dart';
 import 'package:flutter_template/features/common/mixin/theme_mixin.dart';
 import 'package:flutter_template/features/services/screen/services_screen.dart';
 import 'package:flutter_template/features/services/screen/services_screen_model.dart';
