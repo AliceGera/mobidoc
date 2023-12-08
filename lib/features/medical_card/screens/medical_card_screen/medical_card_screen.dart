@@ -146,28 +146,32 @@ class _BodyState extends State<_Body> {
                                       padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
                                       child: Column(
                                         children: [
-                                          Row(
-                                            children: [
-                                              InkWell(
-                                                onTap: () => Navigator.pop(context),
-                                                child: Text(
-                                                  'Отмена',
-                                                  style: AppTextStyle.medium16.value.copyWith(color: AppColors.darkBlue),
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 18),
+                                            child: Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () => Navigator.pop(context),
+                                                  child: Text(
+                                                    'Отмена',
+                                                    style: AppTextStyle.medium16.value.copyWith(color: AppColors.darkBlue),
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 40),
-                                                child: Text(
-                                                  'Добавить карту',
-                                                  style: AppTextStyle.bold20.value.copyWith(color: AppColors.black),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 40),
+                                                  child: Text(
+                                                    'Добавить карту',
+                                                    style: AppTextStyle.bold20.value.copyWith(color: AppColors.black),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                           Stack(
                                             children: [
+                                              if(isShowValue != true)
                                               SizedBox(
-                                                height: size.height * 0.45,
+                                                height: size.height * 0.40,
                                                 child: Column(
                                                   children: [
                                                     Expanded(flex: 4, child: _buildQrView(context)),
@@ -178,24 +182,32 @@ class _BodyState extends State<_Body> {
                                                 Container(
                                                   width: double.infinity,
                                                   color: AppColors.backgroundColor.withOpacity(.5),
-                                                  height: size.height * 0.45,
-                                                  child: SvgPicture.asset('assets/images/check_circle.svg'),
+                                                  height: size.height * 0.40,
+                                                  child: SvgPicture.asset(
+                                                    'assets/images/check_circle.svg',
+                                                    height: 30,
+                                                    width: 30,
+                                                    fit: BoxFit.scaleDown,
+                                                  ),
                                                 ),
                                               if (isFindQrValue == false && isShowValue == true)
                                                 Container(
                                                   color: AppColors.backgroundColor.withOpacity(.5),
-                                                  height: size.height * 0.45,
+                                                  height: size.height * 0.40,
                                                   child: Column(
                                                     children: [
                                                       const Padding(
-                                                        padding: EdgeInsets.only(top: 150),
+                                                        padding: EdgeInsets.only(top: 40),
                                                         child: AppErrorWidget(
-                                                          wrongText: 'Карта с таким ID не найдена в базе.',
+                                                          wrongText: 'Ошибка\n сканирования.\nПопробуйте еще раз!',
                                                         ),
                                                       ),
-                                                      AppButtonWidget(
-                                                        title: 'Повторить',
-                                                        onPressed: widget.someMethod,
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 33,vertical: 15),
+                                                        child: AppButtonWidget(
+                                                          title: 'Повторить',
+                                                          onPressed: widget.someMethod,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -229,11 +241,14 @@ class _BodyState extends State<_Body> {
 
   Widget _buildQrView(BuildContext context) {
     final scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: widget.onQRViewCreated,
-      overlay: QrScannerOverlayShape(borderColor: AppColors.backgroundColor, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: QRView(
+        key: qrKey,
+        onQRViewCreated: widget.onQRViewCreated,
+        overlay: QrScannerOverlayShape(borderColor: AppColors.backgroundColor, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
+        onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+      ),
     );
   }
 
