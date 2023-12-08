@@ -3,11 +3,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
-import 'package:flutter_template/assets/res/resources.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
+import 'package:flutter_template/features/common/widgets/app_error_widget.dart';
 import 'package:flutter_template/features/login_screen/login_screen_widget_model.dart';
 import 'package:flutter_template/features/login_screen/widgets/text_field_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
@@ -80,7 +79,7 @@ class _Body extends StatelessWidget {
           ),
         ),
         body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          builder: (context, viewportConstraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -145,11 +144,16 @@ class _Body extends StatelessWidget {
                               ),
                               ValueListenableBuilder<bool>(
                                 builder: (
-                                  BuildContext context,
-                                  bool value,
-                                  Widget? child,
+                                  context,
+                                  value,
+                                  child,
                                 ) {
-                                  return value ? const _WrongValuesWidget() : SizedBox();
+                                  return value
+                                      ? const AppErrorWidget(
+                                          wrongText: 'Неверный логин/\nпароль',
+                                          isLogin: true,
+                                        )
+                                      : const SizedBox();
                                 },
                                 valueListenable: wrongValue,
                               ),
@@ -172,34 +176,6 @@ class _Body extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class _WrongValuesWidget extends StatelessWidget {
-  const _WrongValuesWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 36),
-            child: SvgPicture.asset(SvgIcons.iconWrongPasswordEmail),
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Text(
-              'Неверный логин/\nпароль',
-              style: AppTextStyle.semiBold18.value,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

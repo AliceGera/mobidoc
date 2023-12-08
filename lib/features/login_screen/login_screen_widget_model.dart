@@ -90,7 +90,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
 
   @override
   void openNextScreen() {
-    if (_textEmailController.text == 'cats@gmail.com' && _textPasswordController.text == '1234') {
+    if (_textEmailController.text==''/*_textEmailController.text == 'cats@gmail.com' && _textPasswordController.text == '1234'*/) {
       _appRouter.push(MainRouter());
     } else {
       _wrongValue.value = true;

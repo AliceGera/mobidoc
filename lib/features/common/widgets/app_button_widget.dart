@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
+import 'package:flutter_template/assets/text/text_style.dart';
 
 // ignore: public_member_api_docs
 class AppButtonWidget extends StatelessWidget {
@@ -44,7 +45,7 @@ class AppButtonWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              title,
+              title,style: AppTextStyle.semiBold18.value.copyWith(color: AppColors.white),
             ),
           ],
         ),

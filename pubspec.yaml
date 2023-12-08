@@ -4,7 +4,9 @@ description: a Flutter template project for development.
 publish_to: none
 
 dependencies:
+  shimmer: ^3.0.0
   flutter_gif: ^0.0.4
+  union_state: ^0.0.1
   step_progress_indicator: ^1.0.2
   flutter_svg: ^2.0.9
   analytics: 1.0.2
