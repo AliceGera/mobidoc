@@ -24,8 +24,6 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
     return Scaffold(
       body: _Body(
         themeState: wm.themeState,
-        openOnboarding: wm.openOnboarding,
-        openLogin: wm.openLogin,
         setThemeMode: wm.setThemeMode,
       ),
     );
@@ -35,18 +33,15 @@ class MedicalCardScreen extends ElementaryWidget<IMedicalCardScreenWidgetModel> 
 class _Body extends StatelessWidget {
   final ListenableState<ThemeMode> themeState;
   final void Function(ThemeMode?) setThemeMode;
-  final VoidCallback openOnboarding;
-  final VoidCallback openLogin;
+
   const _Body({
     required this.themeState,
     required this.setThemeMode,
-    required this.openOnboarding,
-    required this.openLogin,
   });
 
   @override
   Widget build(BuildContext context) {
-     return SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         body: SingleChildScrollView(
@@ -126,24 +121,11 @@ class _Body extends StatelessWidget {
                     height: 16,
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    onTap: openOnboarding,
-                    title: const Text('To onboarding screen'),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    onTap: openLogin,
-                    title: const Text('To login screen'),
-                  ),
-                ),
               ],
             ),
           ),
         ),
       ),
     );
-
   }
 }

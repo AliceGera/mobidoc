@@ -1,11 +1,14 @@
+// ignore_for_file: public_member_api_docs, type_annotate_public_apis
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/config/environment/environment.dart';
 import 'package:flutter_template/features/app/di/app_scope.dart';
-import 'package:flutter_template/features/medical_card/screens/login_screen/login_screen.dart';
-import 'package:flutter_template/features/medical_card/screens/login_screen/login_screen_model.dart';
+import 'package:flutter_template/features/login_screen/login_screen.dart';
+import 'package:flutter_template/features/login_screen/login_screen_model.dart';
 import 'package:flutter_template/features/navigation/service/router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore_for_file: avoid_positional_boolean_parameters
 
@@ -20,31 +23,50 @@ LoginScreenWidgetModel loginScreenWidgetModelFactory(
     Environment.instance(),
     appDependencies.themeService,
   );
-  final router = appDependencies.router;
-  return LoginScreenWidgetModel(model, router);
+
+  return LoginScreenWidgetModel(
+    model,
+    appDependencies.router,
+    appDependencies.sharedPreferences,
+  );
 }
 
 /// Widget Model for [LoginScreen].
 class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> implements ILoginScreenWidgetModel {
   /// Class that coordinates navigation for the whole app.
   late final TextEditingController _textEmailController;
-  final AppRouter router;
+  late final TextEditingController _textPasswordController;
+  late final ValueNotifier<bool> _wrongValue;
+
+  final AppRouter _appRouter;
+  final SharedPreferences _prefs;
   final _themeState = StateNotifier<ThemeMode>();
+
   @override
   ListenableState<ThemeMode> get themeState => _themeState;
 
   /// Create an instance [LoginScreenModel].
   LoginScreenWidgetModel(
     super._model,
-    this.router,
+    this._appRouter,
+    this._prefs,
   );
+
   @override
   TextEditingController get textEmailController => _textEmailController;
 
   @override
+  TextEditingController get textPasswordController => _textPasswordController;
+
+  @override
+  ValueNotifier<bool> get wrongValue => _wrongValue;
+
+  @override
   void initWidgetModel() {
     super.initWidgetModel();
+    _wrongValue = ValueNotifier(false);
     _textEmailController = TextEditingController();
+    _textPasswordController = TextEditingController();
     model.currentThemeMode.addListener(_updateThemeMode);
     _themeState.accept(model.currentThemeMode.value);
   }
@@ -57,7 +79,7 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
 
   @override
   void closeScreen() {
-    router.pop();
+    _appRouter.pop();
   }
 
   @override
@@ -67,14 +89,14 @@ class LoginScreenWidgetModel extends WidgetModel<LoginScreen, LoginScreenModel> 
   }
 
   @override
-  void openOnboarding() {
-    router.push( OnboardingRouter());
+  void openNextScreen() {
+    if (_textEmailController.text == 'cats@gmail.com' && _textPasswordController.text == '1234') {
+      _appRouter.push(MainRouter());
+    } else {
+      _wrongValue.value = true;
+    }
   }
 
-  @override
-  void openLogin() {
-    router.push( LoginRouter());
-  }
   void _updateThemeMode() {
     _themeState.accept(model.currentThemeMode.value);
   }
@@ -86,6 +108,11 @@ abstract class ILoginScreenWidgetModel extends IWidgetModel {
   ListenableState<ThemeMode> get themeState;
 
   TextEditingController get textEmailController;
+
+  TextEditingController get textPasswordController;
+
+  ValueNotifier<bool> get wrongValue;
+
   /// Method to close the debug screens.
   void closeScreen() {}
 
@@ -93,8 +120,5 @@ abstract class ILoginScreenWidgetModel extends IWidgetModel {
   void setThemeMode(ThemeMode? themeMode) {}
 
   /// Navigate to onboarding screen.
-  void openOnboarding();
-
-  /// Navigate to login screen.
-  void openLogin();
+  void openNextScreen();
 }

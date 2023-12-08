@@ -1,22 +1,44 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:auto_route/auto_route.dart';
+import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 import 'package:flutter_template/features/common/widgets/app_button_widget.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
+import 'package:flutter_template/features/onboarding_screen/onboarding_screen_widget_model.dart';
 
 /// Onboarding screen.
 @RoutePage(name: AppRouteNames.onboardingScreen)
-class OnboardingScreen extends StatefulWidget {
-  // ignore: public_member_api_docs
-  const OnboardingScreen({super.key});
+class OnboardingScreen extends ElementaryWidget<IOnboardingScreenWidgetModel> {
+  /// Create an instance [ OnboardingScreen].
+  const OnboardingScreen({
+    Key? key,
+    WidgetModelFactory wmFactory = onboardingScreenWidgetModelFactory,
+  }) : super(wmFactory, key: key);
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  Widget build(IOnboardingScreenWidgetModel wm) {
+    return OnboardingScreenBody(wm: wm);
+  }
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class OnboardingScreenBody extends StatefulWidget {
+  // ignore: public_member_api_docs
+  final IOnboardingScreenWidgetModel wm;
+
+  const OnboardingScreenBody({
+    required this.wm,
+    super.key,
+  });
+
+  @override
+  State<OnboardingScreenBody> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreenBody> {
   final PageController controller = PageController();
   int index = 0;
 
@@ -25,7 +47,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.white,
-        appBar: _AppBarOnboardingWidget(index: index),
+        appBar: _AppBarOnboardingWidget(
+          index: index,
+          openLogin: widget.wm.openLogin,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -68,7 +93,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           : index == 2
                               ? 'Начать работу!'
                               : '',
-                  onPressed: () {},
+                  onPressed: () async {
+                    if (index == 2) {
+                      await widget.wm.finishOnboarding();
+                      widget.wm.openLogin();
+                    } else {
+                      index++;
+                      controller.jumpToPage(index);
+                    }
+                  },
                 ),
               ),
             ],
@@ -127,8 +160,10 @@ class _MainWidget extends StatelessWidget {
 class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWidget {
   const _AppBarOnboardingWidget({
     required this.index,
+    required this.openLogin,
   });
 
+  final VoidCallback openLogin;
   final int index;
 
   @override
@@ -151,7 +186,7 @@ class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWi
                       child: InkWell(
                         splashColor: AppColors.white,
                         highlightColor: AppColors.white,
-                        onTap: () {},
+                        onTap: openLogin,
                         child: Text(
                           'Пропустить',
                           style: AppTextStyle.semiBold16.value.copyWith(color: Colors.black),

@@ -9,7 +9,6 @@ import 'package:flutter_template/features/navigation/service/router.dart';
 /// All routes for the main feature.
 final mainRoutes = AutoRoute(
   page: MainRouter.page,
-  initial: true,
   path: AppRoutePaths.mainPath,
   children: [
     homeRoutes,

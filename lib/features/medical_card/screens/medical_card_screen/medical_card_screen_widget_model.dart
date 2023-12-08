@@ -29,6 +29,7 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
   /// Class that coordinates navigation for the whole app.
   final AppRouter router;
   final _themeState = StateNotifier<ThemeMode>();
+
   @override
   ListenableState<ThemeMode> get themeState => _themeState;
 
@@ -61,15 +62,6 @@ class MedicalCardScreenWidgetModel extends WidgetModel<MedicalCardScreen, Medica
     model.setThemeMode(themeMode);
   }
 
-  @override
-  void openOnboarding() {
-    router.push(const OnboardingRouter());
-  }
-
-  @override
-  void openLogin() {
-    router.push(LoginRouter());
-  }
   void _updateThemeMode() {
     _themeState.accept(model.currentThemeMode.value);
   }
@@ -85,10 +77,4 @@ abstract class IMedicalCardScreenWidgetModel extends IWidgetModel {
 
   /// Set theme mode for app.
   void setThemeMode(ThemeMode? themeMode) {}
-
-  /// Navigate to onboarding screen.
-  void openOnboarding();
-
-  /// Navigate to login screen.
-  void openLogin();
 }

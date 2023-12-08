@@ -16,5 +16,7 @@ class SvgIcons {
   static const String iconList = 'assets/icons/list.svg';
   static const String iconArrow = 'assets/icons/arrow.svg';
   static const String iconDoctorPhoto ='assets/icons/doctor_photo.svg';
+  static const String iconWrongPasswordEmail ='assets/icons/wrong_password_email.svg';
+
   static const List<String> values = [testSvg];
 }

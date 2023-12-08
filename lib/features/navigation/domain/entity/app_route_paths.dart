@@ -26,4 +26,8 @@ abstract class AppRoutePaths {
 
   /// Path to services screen.
   static const String servicesPath = 'services';
+
+  /// Path to onboarding screen.
+  static const String splashPath = '/splash';
+
 }
