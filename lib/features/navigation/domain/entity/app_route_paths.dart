@@ -6,21 +6,24 @@
 /// static const String screenPath = 'screenPath';
 /// ```
 abstract class AppRoutePaths {
-  /// Path to temp screen.
+  /// Path to doctors screen.
   static const String doctorsPath = 'doctors';
 
-  /// Path to debug screen.
+  /// Path to home screen.
   static const String homePath = 'home';
 
-  /// Path to ui kit screen.
+  /// Path to main screen.
   static const String mainPath = '/main';
 
-  /// Path to dash screen.
+  /// Path to medical card screen.
   static const String medicalCardPath = 'medicalCard';
 
-  /// Path to info screen.
+  /// Path to onboarding screen.
   static const String onboardingPath = '/onboarding';
 
-  /// Path to logs history screen.
+  /// Path to login screen.
+  static const String loginPath = '/login';
+
+  /// Path to services screen.
   static const String servicesPath = 'services';
 }

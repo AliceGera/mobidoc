@@ -84,7 +84,6 @@ class _MainWidget extends StatelessWidget {
     required this.assetName,
     required this.title,
     required this.subtitle,
-    super.key,
   });
 
   final String assetName;
@@ -128,7 +127,6 @@ class _MainWidget extends StatelessWidget {
 class _AppBarOnboardingWidget extends StatelessWidget implements PreferredSizeWidget {
   const _AppBarOnboardingWidget({
     required this.index,
-    super.key,
   });
 
   final int index;
