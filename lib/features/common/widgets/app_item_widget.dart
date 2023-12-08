@@ -39,7 +39,9 @@ class AppItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyle.semiBold18.value,
+                    style: AppTextStyle.semiBold18.value.copyWith(
+                      color: AppColors.black,
+                    ),
                   ),
                   Text(
                     textInfo,

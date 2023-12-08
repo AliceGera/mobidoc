@@ -3,19 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_template/config/app_config.dart';
 import 'package:flutter_template/config/environment/environment.dart';
 import 'package:flutter_template/features/common/service/theme/theme_service.dart';
-import 'package:flutter_template/features/medical_card/screens/medical_card_screen/medical_card_screen.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-
+import 'package:flutter_template/features/medical_card/screens/info_about_medical_card/info_about_medical_card_screen.dart';
 // ignore_for_file: avoid_positional_boolean_parameters
 
-/// Model for [MedicalCardScreen].
-class MedicalCardScreenModel extends ElementaryModel {
+/// Model for [InfoAboutMedicalCardScreen].
+class InfoAboutMedicalCardScreenModel extends ElementaryModel {
   /// Interface for handle error in business logic.
   final ErrorHandler errorHandler;
-
-  final Barcode? result;
-
-  final QRViewController? controller;
 
   /// Environment configuration.
   final Environment _environment;
@@ -28,12 +22,10 @@ class MedicalCardScreenModel extends ElementaryModel {
   /// Theme mode change Notifier.
   late ValueNotifier<ThemeMode> currentThemeMode;
 
-  /// Create an instance [MedicalCardScreenModel].
-  MedicalCardScreenModel(
-      this.errorHandler,
-      this._environment,
-    this.result,
-    this.controller,
+  /// Create an instance [InfoAboutMedicalCardScreenModel].
+  InfoAboutMedicalCardScreenModel(
+    this.errorHandler,
+    this._environment,
     this._themeService,
   ) : super(errorHandler: errorHandler);
 
@@ -44,8 +36,6 @@ class MedicalCardScreenModel extends ElementaryModel {
     _themeService.addListener(_updateTheme);
     _environment.addListener(_environmentChangedCallback);
   }
-
-
 
   @override
   void dispose() {

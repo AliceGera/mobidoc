@@ -5,9 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
 import 'package:flutter_template/assets/res/resources.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
+import 'package:flutter_template/features/common/widgets/app_item_loading_widget.dart';
 import 'package:flutter_template/features/common/widgets/app_item_widget.dart';
 import 'package:flutter_template/features/home/screen/home_screen_widget_model.dart';
 import 'package:flutter_template/features/navigation/domain/entity/app_route_names.dart';
+import 'package:shimmer/shimmer.dart';
 
 /// Main widget for HomeScreen feature.
 @RoutePage(
@@ -19,51 +21,66 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
     Key? key,
     WidgetModelFactory wmFactory = homeScreenWmFactory,
   }) : super(wmFactory, key: key);
+  final bool isLoading = true;
 
   @override
   Widget build(IHomeScreenWidgetModel wm) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const _ProfileWidget(),
-              Padding(
-                padding: const EdgeInsets.only(right: 22, left: 22, top: 40, bottom: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _NotificationsWidget(
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            isLoading ? _LoadingProfileWidget() : _ProfileWidget(name: 'Григорий Плювкин'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 50),
+                    child: _NotificationsWidget(
+                      isShimer: isLoading,
+                      notice: 'Уведомления',
                       doctor: 'Терапевт',
+                      textFirst: 'Autoestima 2/5',
+                      textSecond: 'Sin asignar',
+                      textThird: 'Sin hora',
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 50, bottom: 20),
-                      child: Text(
-                        'Последние посещения',
-                        style: AppTextStyle.bold20.value,
-                      ),
+                  ),
+                  isLoading
+                      ? Padding(
+                          padding: const EdgeInsets.only(bottom: 25),
+                          child: AppItemLoadingWidget(text: 'Последние посещения'),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 50, bottom: 20),
+                          child: Text(
+                            'Последние посещения',
+                            style: AppTextStyle.bold20.value,
+                          ),
+                        ),
+                  ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return isLoading
+                          ? const AppItemLoadingWidget()
+                          : const AppItemWidget(
+                              title: 'Терапевт',
+                              textInfo: '10 Июня 2023',
+                            );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 16,
                     ),
-                    ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return const AppItemWidget(
-                          title: 'Терапевт',
-                          textInfo: '10 Июня 2023',
-                        );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                        height: 16,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          ],
+        )),
       ),
     );
   }
@@ -71,9 +88,19 @@ class HomeScreen extends ElementaryWidget<IHomeScreenWidgetModel> {
 
 class _NotificationsWidget extends StatelessWidget {
   final String doctor;
+  final String notice;
+  final String textFirst;
+  final String textSecond;
+  final String textThird;
+  final bool isShimer;
 
   const _NotificationsWidget({
     required this.doctor,
+    required this.notice,
+    required this.textFirst,
+    required this.textSecond,
+    required this.textThird,
+    required this.isShimer,
   });
 
   @override
@@ -99,7 +126,7 @@ class _NotificationsWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Уведомления',
+                isShimer ? '' : notice,
                 style: AppTextStyle.semiBold16.value.copyWith(
                   color: AppColors.darkGray,
                 ),
@@ -107,7 +134,7 @@ class _NotificationsWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 14),
                 child: Text(
-                  doctor,
+                  isShimer ? '' : doctor,
                   style: AppTextStyle.semiBold18.value,
                 ),
               ),
@@ -116,7 +143,7 @@ class _NotificationsWidget extends StatelessWidget {
                   children: [
                     Container(
                       width: 5,
-                      color: AppColors.gray,
+                      color: isShimer ? Colors.transparent : AppColors.gray,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
@@ -124,15 +151,15 @@ class _NotificationsWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Autoestima 2/5',
+                            isShimer ? '' : 'textFirst',
                             style: AppTextStyle.semiBold12.value,
                           ),
                           Text(
-                            'Sin asignar',
+                            isShimer ? '' : textSecond,
                             style: AppTextStyle.medium12.value,
                           ),
                           Text(
-                            'Sin hora',
+                            isShimer ? '' : textThird,
                             style: AppTextStyle.medium12.value.copyWith(
                               color: AppColors.black.withOpacity(.5),
                             ),
@@ -152,7 +179,9 @@ class _NotificationsWidget extends StatelessWidget {
 }
 
 class _ProfileWidget extends StatelessWidget {
-  const _ProfileWidget();
+  final String name;
+
+  _ProfileWidget({required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -169,12 +198,12 @@ class _ProfileWidget extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Григорий Плювкин',
+              name,
               style: AppTextStyle.bold24.value.copyWith(
                 color: AppColors.white,
               ),
@@ -243,4 +272,114 @@ class _ProfileWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class _LoadingProfileWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 210,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(40)),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment(0.8, 1),
+              colors: <Color>[
+                AppColors.darkBlue,
+                AppColors.lightBlue,
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 210,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 40,
+                  width: 262,
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 52, bottom: 10),
+                      child: Container(
+                        height: 32,
+                        width: 135,
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                    CustomPaint(
+                      size: Size(100, 100),
+                      painter: CirclePainter(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LastVisits extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 25),
+      child: SizedBox(
+        child: Shimmer.fromColors(
+          baseColor: AppColors.lightBlueItem,
+          highlightColor: AppColors.lightBlueItem.withOpacity(0.4),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: AppColors.lightBlueItem,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Text(
+                'Последние посещения',
+                style: AppTextStyle.semiBold18.value.copyWith(color: Colors.transparent),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CirclePainter extends CustomPainter {
+  final _paint = Paint()
+    ..color = AppColors.lightBlueProfile
+    ..strokeWidth = 20
+    ..style = PaintingStyle.stroke;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawOval(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      _paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

@@ -1,18 +1,17 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_template/assets/colors/app_colors.dart';
-import 'package:flutter_template/assets/res/resources.dart';
 import 'package:flutter_template/assets/text/text_style.dart';
 
 class AppDoctorWidget extends StatelessWidget {
   final String doctor;
   final String doctorName;
-
+  final String bio;
   const AppDoctorWidget({
     required this.doctor,
     required this.doctorName,
+    required this.bio,
     super.key,
   });
 
@@ -36,10 +35,13 @@ class AppDoctorWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(SvgIcons.iconDoctorPhoto),
-                  Text(
-                    doctorName,
-                    style: AppTextStyle.bold22.value,
+                 // SvgPicture.asset(SvgIcons.iconDoctorPhoto),
+                  Expanded(
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      doctorName,
+                      style: AppTextStyle.bold22.value,
+                    ),
                   ),
                 ],
               ),
@@ -53,7 +55,7 @@ class AppDoctorWidget extends StatelessWidget {
               Text(
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                'Опыт работы более 15 лет в области Опыт работы более 15 лет в области',
+                bio,
                 style: AppTextStyle.semiBold12.value,
               ),
             ],

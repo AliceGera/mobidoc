@@ -3,7 +3,7 @@ import 'package:flutter_template/config/environment/environment.dart';
 /// Server urls.
 abstract class Url {
   /// TRest url.
-  static String get testUrl => 'http://uinames.com/api/';
+  static String get testUrl => 'http://www.mobidoc.roketstorm.com';
 
   /// Prod url.
   static String get prodUrl => 'https://prod.surfstudio.ru/api';
